@@ -1,4 +1,4 @@
-FROM maven:3.9.12-eclipse-temurin-25 as Build
+FROM maven:3.9.12-eclipse-temurin-25 AS Build
 LABEL authors="Organisationen"
 
 WORKDIR /app
