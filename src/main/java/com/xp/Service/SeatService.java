@@ -38,6 +38,6 @@ public class SeatService {
     }
 
     public Seat findSeatById(Long seatId) {
-        return seatRepository.findById(seatId).orElseThrow(() -> new RuntimeException("seat: " + seatId + " not found"));
+        return seatRepository.findById(seatId).orElseThrow(() -> new IllegalStateException("seat " + seatId + " not found"));
     }
 }
