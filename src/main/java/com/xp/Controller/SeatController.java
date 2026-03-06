@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/Un-named")
+@RequestMapping("/api/(seats?)")
 public class SeatController {
 
     private final SeatService seatService;
