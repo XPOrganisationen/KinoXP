@@ -1,0 +1,33 @@
+.scroll--viewport {
+    display: flex;
+    place-items: center start;
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+
+    padding-inline: 8px;
+    scroll-padding-inline: 8px;
+
+    @media (prefers-reduced-motion: no-preference) {
+        scroll-behavior: smooth;
+    }
+}
+
+.scroll--root {
+    container: --homescreen / size;
+}
+
+.scroll--viewport {
+    container: --homescreen-scroller / size scroll-state;
+}
+
+.scroll--content > li {
+    container-type: scroll-state;
+}
+
+.scroll--viewport {
+    scroll-snap-type: x mandatory;
+}
+
+.scroll--content > li {
+    scroll-snap-align: start;
+}

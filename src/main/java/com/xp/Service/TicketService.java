@@ -25,7 +25,7 @@ public class TicketService {
             pricePerTicket += 15;
         }
 
-        if (movie.isIs3D()) { // samme som før, en 3D film koster lidt ekstra
+        if (movie.is_3d()) { // samme som før, en 3D film koster lidt ekstra
             pricePerTicket +=10;
         }
 
