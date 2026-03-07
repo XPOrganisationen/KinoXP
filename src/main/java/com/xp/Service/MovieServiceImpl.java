@@ -23,6 +23,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie findById(Long movieId) {
+        var movie =  movieRepository.findById(movieId);
         return movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityDoesNotExistException("No movie found with ID " + movieId));
     }

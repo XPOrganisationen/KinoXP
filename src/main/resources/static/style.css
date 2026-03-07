@@ -1,33 +1,51 @@
+h1, h2, h3 {
+    margin: 0;
+}
+
+section {
+    margin-bottom: 20px; /* Space between sections */
+}
+
 .scroll--viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+}
+
+.scroll--content {
     display: flex;
-    place-items: center start;
-    overflow: auto hidden;
-    overscroll-behavior-x: contain;
-
-    padding-inline: 8px;
-    scroll-padding-inline: 8px;
-
-    @media (prefers-reduced-motion: no-preference) {
-        scroll-behavior: smooth;
-    }
+    flex-direction: row;
+    padding: 0;
 }
 
-.scroll--root {
-    container: --homescreen / size;
+.movie-card-list-item {
+    list-style-type: none;
+    margin-right: 10px;
 }
 
-.scroll--viewport {
-    container: --homescreen-scroller / size scroll-state;
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+    border: 2px solid red;
+    background-color: lightgray;
+    padding: 10px;
 }
 
-.scroll--content > li {
-    container-type: scroll-state;
+.movie-card-img {
+    width: 80%;
+    height: auto;
 }
 
-.scroll--viewport {
-    scroll-snap-type: x mandatory;
+body {
+    font-family: Arial, sans-serif;
 }
 
-.scroll--content > li {
-    scroll-snap-align: start;
+#soon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    align-items: center;
 }

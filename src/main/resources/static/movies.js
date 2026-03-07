@@ -46,8 +46,8 @@ function buildMovieCard(movie) {
     let card_description = document.createElement("p");
     card_description.classList.add("movie-card-description");
     card_description.textContent = movie.movieDescription;
-    card_body.appendChild(card_description);
     card_body.appendChild(card_title);
+    card_body.appendChild(card_description);
 
     card.appendChild(card_img);
     card.appendChild(card_body);
@@ -57,7 +57,13 @@ function buildMovieCard(movie) {
 function renderPage(popularMovies, moviesAvailableShownSoon) {
     let carrouselContents = document.querySelector(".scroll--content");
     let gridContents = document.querySelector("#soon-grid");
-    let carrouselMovieCards = popularMovies.map(movie => buildMovieCard(movie));
+    let carrouselMovieCards = popularMovies.map(movie => {
+        let card = buildMovieCard(movie);
+        let liWrapper = document.createElement("li");
+        liWrapper.classList.add("movie-card-list-item");
+        liWrapper.appendChild(card);
+        return liWrapper;
+    });
     let availableShownSoonCards = moviesAvailableShownSoon.map(movie => buildMovieCard(movie));
 
     carrouselMovieCards.forEach((movieCard) => carrouselContents.appendChild(movieCard));
