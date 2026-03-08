@@ -1,20 +1,32 @@
 package com.xp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="movies")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Column(name="movie_id")
     private Long movieId;
+
+    @Column(name="movie_title")
     private String movieTitle;
+
+    @Column(name="movie_description")
     private String movieDescription;
+
+    @Column(name="movie_duration_minutes")
     private Double movieDuration;
+
+    @Column(name="movie_category")
     private String movieCategory;
+
+    @Column(name="age_limit")
     private Integer ageLimit;
+
+    @Column(name="is_3d")
     private boolean is3D;
 
     public Movie() {}
