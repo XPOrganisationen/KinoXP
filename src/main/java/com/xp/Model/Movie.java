@@ -1,43 +1,41 @@
-package com.xp.model;
+package com.xp.Model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
-@Table(name="movies")
+@Table(name = "Movies")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name="movie_id")
     private Long movieId;
-
-    @Column(name="movie_title")
     private String movieTitle;
-
-    @Column(name="movie_description")
     private String movieDescription;
-
-    @Column(name="movie_duration_minutes")
-    private Double movieDuration;
-
-    @Column(name="movie_category")
+    private Double movieDurationMinutes;
     private String movieCategory;
-
-    @Column(name="age_limit")
     private Integer ageLimit;
-
-    @Column(name="is_3d")
-    private boolean is3D;
+    private boolean is_3d;
 
     public Movie() {}
 
-    public Movie(String movieTitle, String movieDescription, Double movieDuration, String movieCategory, Integer ageLimit, boolean is3D) {
+    public Movie(String movieTitle, String movieDescription, Double movieDurationMinutes, String movieCategory, Integer ageLimit, boolean is_3d) {
         this.movieTitle = movieTitle;
         this.movieDescription = movieDescription;
-        this.movieDuration = movieDuration;
+        this.movieDurationMinutes = movieDurationMinutes;
         this.movieCategory = movieCategory;
         this.ageLimit = ageLimit;
-        this.is3D = is3D;
+        this.is_3d = is_3d;
+    }
+
+    public Movie(Long movieId, String movieTitle, String movieDescription, Double movieDurationMinutes, String movieCategory, Integer ageLimit, boolean is_3d) {
+        this.movieId = movieId;
+        this.movieTitle = movieTitle;
+        this.movieDescription = movieDescription;
+        this.movieDurationMinutes = movieDurationMinutes;
+        this.movieCategory = movieCategory;
+        this.ageLimit = ageLimit;
+        this.is_3d = is_3d;
     }
 
     public Long getMovieId() {
@@ -54,12 +52,12 @@ public class Movie {
         this.ageLimit = ageLimit;
     }
 
-    public boolean isIs3D() {
-        return is3D;
+    public boolean is_3d() {
+        return is_3d;
     }
 
-    public void setIs3D(boolean is3D) {
-        this.is3D = is3D;
+    public void setIs_3d(boolean is3D) {
+        this.is_3d = is3D;
     }
 
     public String getMovieCategory() {
@@ -79,11 +77,11 @@ public class Movie {
     }
 
     public Double getMovieDuration() {
-        return movieDuration;
+        return movieDurationMinutes;
     }
 
-    public void setMovieDuration(Double movieDuration) {
-        this.movieDuration = movieDuration;
+    public void setMovieDuration(Double movieDurationMinutes) {
+        this.movieDurationMinutes = movieDurationMinutes;
     }
 
     public String getMovieTitle() {
@@ -92,5 +90,17 @@ public class Movie {
 
     public void setMovieTitle(String movieTitle) {
         this.movieTitle = movieTitle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return is_3d == movie.is_3d && Objects.equals(movieId, movie.movieId) && Objects.equals(movieTitle, movie.movieTitle) && Objects.equals(movieDescription, movie.movieDescription) && Objects.equals(movieDurationMinutes, movie.movieDurationMinutes) && Objects.equals(movieCategory, movie.movieCategory) && Objects.equals(ageLimit, movie.ageLimit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, movieTitle, movieDescription, movieDurationMinutes, movieCategory, ageLimit, is_3d);
     }
 }
