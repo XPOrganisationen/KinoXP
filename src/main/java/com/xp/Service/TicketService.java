@@ -1,10 +1,13 @@
 package com.xp.Service;
 
 import com.xp.Model.Movie;
+import com.xp.Model.MovieTicket;
 import com.xp.Model.SeatType;
 import com.xp.Model.TicketType;
 import com.xp.Repository.TicketRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TicketService {
@@ -15,6 +18,14 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
+
+    public List <MovieTicket> findAllTickets() {
+        return ticketRepository.findAll();
+    }
+
+    public MovieTicket findMovieTicketById(Long id) {
+        return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie ticket not found"));
+    }
     public double calculateTotalPrice(TicketType ticketType, SeatType seatType, int quantity, Movie movie) {
 
         double pricePerTicket = ticketType.getPrice(); // priser for de diverse biletter findes i TicketType Enum :)
