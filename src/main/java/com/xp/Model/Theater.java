@@ -1,11 +1,13 @@
 package com.xp.Model;
 
+import com.xp.Model.Cinema;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "Theaters")
+@Table(name="theaters")
 public class Theater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +18,7 @@ public class Theater {
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
+    @JsonBackReference
     private Cinema cinema;
 
     public Theater() {}
