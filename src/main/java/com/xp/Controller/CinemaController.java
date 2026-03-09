@@ -1,7 +1,7 @@
 package com.xp.Controller;
 
 
-import com.xp.model.Cinema;
+import com.xp.Model.Cinema;
 import com.xp.service.CinemaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

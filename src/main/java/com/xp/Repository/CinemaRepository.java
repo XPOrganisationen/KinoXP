@@ -1,6 +1,6 @@
 package com.xp.Repository;
 
-import com.xp.model.Cinema;
+import com.xp.Model.Cinema;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,10 +18,10 @@ public interface CinemaRepository extends JpaRepository <Cinema, Long>
     List<Cinema> findAllByOrderByCinemaNameAsc();
 
     @Query("""
-            SELECT DISTINCT c 
+            SELECT DISTINCT c
             FROM Cinema c
-            LEFT JOIN FETCH c.theaters
+            LEFT JOIN Theater.cinema
             ORDER BY c.cinemaName ASC
-                        """)
+            """)
     List<Cinema> findAllWithTheaters();
 }

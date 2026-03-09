@@ -1,6 +1,6 @@
 package com.xp;
 
-import com.xp.model.Cinema;
+import com.xp.Model.Cinema;
 import com.xp.Repository.CinemaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

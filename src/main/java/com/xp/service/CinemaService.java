@@ -1,6 +1,6 @@
 package com.xp.service;
 
-import com.xp.model.Cinema;
+import com.xp.Model.Cinema;
 import com.xp.Repository.CinemaRepository;
 import org.springframework.stereotype.Service;
 
