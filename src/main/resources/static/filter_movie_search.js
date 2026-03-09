@@ -5,6 +5,7 @@ async function initApp() {
     let categories = await fetchDataFrom('http://localhost:8080/api/movies/categories');
     document.querySelector('#sidebar-filter').addEventListener('submit', handleCategorySubmit);
     document.querySelector('#search-input').onblur = handleSearchSubmit;
+    document.querySelector('.search-results').addEventListener('click', handleMovieClick);
     renderPage(movies, categories);
 }
 
@@ -56,6 +57,12 @@ function renderPage(movies, categories) {
 
     let grid = document.querySelector('.search-results');
     movies.forEach(movie => grid.appendChild(buildMovieCard(movie)));
+}
+
+function handleMovieClick(event) {
+    let clickedMovieCard = event.target.closest(".movie-card");
+    let clickedID = clickedMovieCard.getAttribute("data-movie-id");
+    window.location.href = `book_movie_time_slot.html?movieId=${clickedID}`;
 }
 
 function buildMovieCard(movie) {

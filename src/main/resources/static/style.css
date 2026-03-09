@@ -82,6 +82,57 @@ body {
     margin-bottom: 20px;
 }
 
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    align-items: center;
+}
+
+.sidebar input {
+    display: block;
+}
+
+.container-grid {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    grid-column-gap: 20px;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    align-items: center;
+}
+
 #index-header a {
     margin: 10px;
+}
+
+.timeBoxList {
+    display: inline-block;
+    list-style: none;
+}
+
+.cinema-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 8px;
+    margin: 16px;
+    align-items: center;
+}
+
+.box-with-label {
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.box-with-label .box-with-label {
+    margin: 20px;
+    border: 2px solid black;
+}
+
+#index-header .spacer {
+    flex: 1;
 }

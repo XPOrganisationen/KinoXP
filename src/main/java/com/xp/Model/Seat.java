@@ -22,8 +22,8 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatAvailability seatAvailability;
 
-    @Version
-    private Long version;
+    // @Version
+    // private Long version;
 
     public Seat() {}
 

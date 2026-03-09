@@ -2,6 +2,7 @@ package com.xp.Model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,12 @@ public class Cinema {
         this.cinemaAddress = cinemaAddress;
     }
 
+    public Cinema(Long cinemaId, String cinemaName, String cinemaAddress) {
+        this.cinemaId = cinemaId;
+        this.cinemaName = cinemaName;
+        this.cinemaAddress = cinemaAddress;
+    }
+
     public Long getCinemaId() {
         return  cinemaId;
     }
@@ -42,5 +49,17 @@ public class Cinema {
 
     public void setCinemaName(String cinemaName) {
         this.cinemaName = cinemaName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Cinema cinema = (Cinema) o;
+        return Objects.equals(cinemaId, cinema.cinemaId) && Objects.equals(cinemaName, cinema.cinemaName) && Objects.equals(cinemaAddress, cinema.cinemaAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cinemaId, cinemaName, cinemaAddress);
     }
 }
