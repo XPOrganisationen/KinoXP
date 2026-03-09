@@ -2,6 +2,8 @@ package com.xp.Model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"theater_id", "ro_number", "seat_number"}), name = "Seats")
 public class Seat {
@@ -72,5 +74,17 @@ public class Seat {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Seat seat = (Seat) o;
+        return Objects.equals(seatId, seat.seatId) && Objects.equals(theater, seat.theater) && Objects.equals(rowNumber, seat.rowNumber) && Objects.equals(seatNumber, seat.seatNumber) && seatAvailability == seat.seatAvailability && Objects.equals(version, seat.version);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(seatId, theater, rowNumber, seatNumber, seatAvailability, version);
     }
 }

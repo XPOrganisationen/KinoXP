@@ -51,6 +51,7 @@ CREATE TABLE seats (
     seat_number INT,
     seat_type ENUM('COWBOY_seats', 'NORMAL', 'SOFA_seats'),
     seat_availability ENUM('VACANT', 'RESERVED', 'HANDICAP'),
+    version int DEFAULT 0,
     FOREIGN KEY (theater_id) REFERENCES theaters(theater_id),
     CONSTRAINT NO_DUPLICATE_seats_IN_ONE_THEATER UNIQUE (theater_id, ro_number, seat_number)
 );

@@ -26,6 +26,7 @@ public class SeatController {
     public Seat getSeatById(@PathVariable Long id) {
     return seatService.findSeatById(id);
     }
+
     @PostMapping("/{id}/reserve")
     public String reserveSeat (@PathVariable Long id) {
         seatService.reserveSeat(id);

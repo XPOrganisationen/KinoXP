@@ -8,7 +8,7 @@ public class MovieTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_ticket_id")
-    private Integer movieTicketId;
+    private Long movieTicketId;
 
     private Double price;
 
@@ -32,7 +32,7 @@ public class MovieTicket {
         this.seat = seat;
     }
 
-    public Integer getMovieTicketId() {
+    public Long getMovieTicketId() {
         return movieTicketId;
     }
 
@@ -58,5 +58,13 @@ public class MovieTicket {
 
     public void setShow(Show show) {
         this.show = show;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
