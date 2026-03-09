@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>XPKino - Movie Search</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style_filter.css" />
+</head>
+<body>
+<header id="filter-search-header">
+    <a href="login.html">Medarbejderlogin</a>
+    <h2>KinoXP</h2>
+    <a hidden="hidden"></a>
+</header>
+<main>
+    <div class="container-grid">
+        <div class="sidebar">
+            <form id="sidebar-filter">
+                <!-- Inject kategorier, -->
+                <label for="age-input">Aldersbegrænsning</label>
+                <input id="age-input" type="number" max="99" min="0" placeholder="16">
+                <button id="categories-apply-btn" type="submit">Anvend filter</button>
+            </form>
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <input id="search-input" type="text" placeholder="Søg efter titel..." />
+            </div>
+
+            <div class="search-results">
+                <!-- Inject MovieCards -->
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+<script src="filter_movie_search.js"></script>
+</html>

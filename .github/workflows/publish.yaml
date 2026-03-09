@@ -15,6 +15,7 @@ env:
 jobs:
   build_and_test:
     uses: ./.github/workflows/ci.yaml # HASHPIN HERE AFTER PUSHED CHANGE OF ci.yaml.
+    # Test that docker compose up works
 
   build_docker_image:
     runs-on: ubuntu-latest

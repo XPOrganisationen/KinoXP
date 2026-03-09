@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: XPDB
+    image: "mysql:9.6.0"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 20s
+      retries: 3
+    networks:
+      - spring-mysql
+    ports:
+      - "127.0.0.1:3307:3306"
+
+volumes:
+  db_data:
+    name: XP_database_volume
+
+networks:
+  spring-mysql:
+    driver: bridge

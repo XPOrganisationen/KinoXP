@@ -1,0 +1,40 @@
+<!-- Carrousel stolen from https://nerdy.dev/nintendo-switch-homescreen-css-recreation -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>KinoXP</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header id="index-header">
+        <a href="login.html">Medarbejderlogin</a>
+        <h2>KinoXP</h2>
+        <a href="filter_movie_search.html">Søg efter en film</a>
+    </header>
+    <main>
+        <div id="index-main-content">
+            <section class="scroll--root">
+                <h1>Populære film</h1>
+                <div id="scroller" class="scroll--viewport">
+                    <ul class="scroll--content">
+                        <!-- Inject kort her fra mostPopular -->
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h1>Film der vises snart med ledige pladser</h1>
+                <div id="soon-grid">
+                    <!-- Inject kort fra seatsAvailableShownSoon -->
+                </div>
+            </section>
+        </div>
+
+    </main>
+</body>
+
+<script src="movies.js"></script>
+</html>

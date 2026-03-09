@@ -1,0 +1,87 @@
+h1, h2, h3 {
+    margin: 0;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+.scroll--viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+}
+
+.scroll--content {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
+
+.movie-card-list-item {
+    list-style-type: none;
+    margin-right: 10px;
+}
+
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+    background-color: lightgray;
+    border-radius: 8px;
+    padding: 10px;
+    height: 340px;
+    width: 240px;
+}
+
+.movie-card-body {
+    width: 90%;
+    justify-content: flex-start;
+    padding-bottom: 2px;
+}
+
+.movie-card:hover {
+    background-color: gray;
+}
+
+.movie-card-img {
+    width: 80%;
+    height: 50%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+#soon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2px;
+    align-items: center;
+}
+
+#index-main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
+
+#index-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#index-header a {
+    margin: 10px;
+}
