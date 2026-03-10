@@ -1,7 +1,9 @@
 package com.xp.Service;
 
+import com.xp.Exceptions.DataAccessException;
 import com.xp.Exceptions.EntityDoesNotExistException;
 import com.xp.Model.Employee;
+import com.xp.Model.Movie;
 import com.xp.Repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> findAllByName(String name) {
+        return employeeRepository.findAllByEmployeeNameContainingIgnoreCase(name);
+    }
+
+    @Override
     public Employee findById(Long adminId) {
         var employee =  employeeRepository.findById(adminId);
         return employeeRepository.findById(adminId)
@@ -29,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployeeByUsername(String username) {
-        return employeeRepository.findEmployeeByUsername(username);
+        return employeeRepository.findEmployeeByEmployeeUsername(username);
     }
 
     @Override
@@ -56,8 +63,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public boolean login(String username, String password) {
-        Employee employee = employeeRepository.findEmployeeByUsername(username);
-        return employee.getEmployeePassword().equals(password);
+        Employee employee = employeeRepository.findEmployeeByEmployeeUsername(username);
+        if (employee.getEmployeeRole().equals("admin")) {
+            return employee.getEmployeePassword().equals(password);
+        }
+        throw new DataAccessException("That employee does not have admin privileges");
     }
 
 }

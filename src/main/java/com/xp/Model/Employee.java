@@ -1,11 +1,9 @@
 package com.xp.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="employees")
 public class Employee {
 
     @Id
@@ -15,13 +13,16 @@ public class Employee {
     private String employeeUsername;
     private String employeeName;
     private String employeePassword;
+    private String employeeRole;
 
-    public Employee() {}
+    public Employee() {
+    }
 
-    public Employee(String username, String name, String password) {
+    public Employee(String username, String name, String password, String role) {
         this.employeeUsername = username;
         this.employeeName = name;
         this.employeePassword = password;
+        this.employeeRole = role;
     }
 
     public Long getEmployeeId() {
@@ -55,4 +56,13 @@ public class Employee {
     public void setEmployeeUsername(String adminUsername) {
         this.employeeUsername = adminUsername;
     }
+
+    public String getEmployeeRole() {
+        return employeeRole;
+    }
+
+    public void setEmployeeRole(String employeeRole) {
+        this.employeeRole = employeeRole;
+    }
+
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Log in</title>
 </head>
 <body class="login-page">
@@ -14,7 +14,7 @@
 <div class="login-container">
     <h1>Log in</h1>
 
-    <form th:action="@{/login}" th:object="${employee}" method="post">
+    <form action="/api/login" method="post">
 
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required>

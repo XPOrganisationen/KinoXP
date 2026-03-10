@@ -31,26 +31,27 @@ class EmployeeServiceImplTest {
         emp = new Employee(
                 "mabr0011",
                 "Markus",
-                "password"
+                "password",
+                "admin"
         );
     }
 
     @Test
     void getEmployeeByUsername_ReturnsEmployee() {
-        when(repo.findEmployeeByUsername("mabr0011")).thenReturn(emp);
+        when(repo.findEmployeeByEmployeeUsername("mabr0011")).thenReturn(emp);
 
         Employee result = service.findEmployeeByUsername("mabr0011");
 
         assertEquals(emp, result);
-        verify(repo).findEmployeeByUsername("mabr0011");
+        verify(repo).findEmployeeByEmployeeUsername("mabr0011");
     }
 
     @Test
     void getEmployeeByUsername_ReturnsNullIfNotFound() {
-        when(repo.findEmployeeByUsername("unknown")).thenReturn(null);
+        when(repo.findEmployeeByEmployeeUsername("unknown")).thenReturn(null);
 
         assertNull(service.findEmployeeByUsername("unknown"));
-        verify(repo).findEmployeeByUsername("unknown");
+        verify(repo).findEmployeeByEmployeeUsername("unknown");
     }
 
     @Test

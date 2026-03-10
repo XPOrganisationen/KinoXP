@@ -18,11 +18,11 @@ INSERT INTO cinemas (cinema_name, cinema_address) VALUES
 -- Theater 1 (a differenct cinema): 4 rows x 5 seats = 20
 
 -- Tilføjet data til Employees
-INSERT INTO employees (employee_username, employee_name, employee_password) VALUES
-                                                      ('mabr0011', 'Markus', '1234'),
-                                                      ('masc1001', 'Max-Emil', '2345'),
-                                                      ('fija0001', 'Filip', '3456'),
-                                                      ('pajo0001', 'Patrick', '4567');
+INSERT INTO employees (employee_username, employee_name, employee_password, employee_role) VALUES
+    ('mabr0011', 'Markus', '1234', 'admin'),
+    ('masc1001', 'Max-Emil', '2345', 'admin'),
+    ('fija0001', 'Filip', '3456', 'employee'),
+    ('pajo0001', 'Patrick', '4567', 'employee');
 
 
 

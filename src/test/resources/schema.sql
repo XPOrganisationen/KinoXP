@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS employees;
 
 CREATE TABLE IF NOT EXISTS movies (
-	movie_id INT PRIMARY KEY AUTO_INCREMENT,
+	movie_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     movie_title TEXT,
     movie_description TEXT,
     movie_duration_minutes DOUBLE,
@@ -21,33 +21,34 @@ CREATE TABLE IF NOT EXISTS movies (
 );
 
 CREATE TABLE IF NOT EXISTS cinemas (
-	cinema_id INT PRIMARY KEY AUTO_INCREMENT,
+	cinema_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     cinema_name TEXT,
     cinema_address TEXT
 );
 
 CREATE TABLE IF NOT EXISTS theaters (
-	theater_id INT PRIMARY KEY AUTO_INCREMENT,
+	theater_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     theater_name TEXT,
     number_of_rows INT,
     seats_per_row INT,
-    cinema_id INT,
+    cinema_id BIGINT,
     FOREIGN KEY (cinema_id) REFERENCES cinemas(cinema_id) ON DELETE CASCADE
 );
 
 -- Tilføjet tabel til employees
 CREATE TABLE IF NOT EXISTS employees (
-                                       employee_id INT PRIMARY KEY AUTO_INCREMENT,
-                                       employee_username TEXT,
-                                       employee_name TEXT,
-                                       employee_password TEXT
+    employee_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    employee_username TEXT,
+    employee_name TEXT,
+    employee_password TEXT,
+    employee_role TEXT
 
 );
 
 CREATE TABLE shows (
-	show_id INT PRIMARY KEY AUTO_INCREMENT,
-    movie_id INT,
-    theater_id INT,
+	show_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    movie_id BIGINT,
+    theater_id BIGINT,
     start_time DATETIME,
     FOREIGN KEY (movie_id) REFERENCES movies(movie_id) ON DELETE CASCADE,
     FOREIGN KEY (theater_id) REFERENCES theaters(theater_id) ON DELETE CASCADE,
@@ -55,8 +56,8 @@ CREATE TABLE shows (
 );
 
 CREATE TABLE seats (
-	seat_id INT PRIMARY KEY AUTO_INCREMENT,
-    theater_id INT,
+	seat_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    theater_id BIGINT,
     ro_number INT,
     seat_number INT,
     seat_type ENUM('COWBOY_seats', 'NORMAL', 'SOFA_seats'),

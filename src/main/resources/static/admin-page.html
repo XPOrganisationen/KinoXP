@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="employee.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Log in</title>
 </head>
 <body class="employee-page">
 
 <header class="header">
     <h1>XPKino</h1>
-    <form th:action="logout" method="post">
+    <form action="index.html" method="post">
         <button type="submit">Log out</button>
     </form>
 </header>
@@ -17,19 +17,23 @@
 <div class="employee-container">
     <h1>Admin Page</h1>
 
-    <form th:action="showFilm" method="post">
+    <form action="showMovies.html" method="post">
         <button type="submit">Film</button>
     </form>
 
-    <form th:action="showFilmPlan" method="post">
+    <form action="showShowings.html" method="post">
         <button type="submit">Forestillinger</button>
     </form>
 
-    <form th:action="showEmployees" method="post">
+    <form action="showTheaters.html" method="post">
+        <button type="submit">Sale</button>
+    </form>
+
+    <form action="showEmployees.html" method="post">
         <button type="submit">Ansatte</button>
     </form>
 
-    <form th:action="showTicketSales" method="post">
+    <form action="showTicketSales.html" method="post">
         <button type="submit">Billet salg</button>
     </form>
 </div>

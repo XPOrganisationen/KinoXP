@@ -25,6 +25,11 @@ public class EmployeeController {
         return this.employeeService.findById(adminId);
     }
 
+    @GetMapping("by-name/{employeeName}")
+    public List<Employee> getEmployeeByName(@PathVariable String employeeName) {
+        return this.employeeService.findAllByName(employeeName);
+    }
+
     @PostMapping
     public Employee addEmployee(@RequestBody Employee employee) {
         return this.employeeService.addEmployee(employee);
