@@ -2,9 +2,9 @@ package com.xp.Model;
 
 public enum SeatType {
 
-    COWBOY_SEATS(0),
+    COWBOY_seats(0),
     NORMAL(10),
-    SOFA_SEATS(25);
+    SOFA_seats(25);
 
     private final double priceAdjustment;
 

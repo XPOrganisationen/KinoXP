@@ -1,8 +1,12 @@
 package com.xp.Service;
 
-import com.xp.Model.Seat;
+import com.xp.Model.MovieTicket;
 import com.xp.Model.SeatAvailability;
+import com.xp.Model.Show;
+import com.xp.Model.ShowSeat;
 import com.xp.Repository.SeatRepository;
+import com.xp.Repository.ShowRepository;
+import com.xp.Repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -13,31 +17,55 @@ import java.util.List;
 public class SeatService {
 
     public final SeatRepository seatRepository;
+    private final TicketRepository ticketRepository;
+    private final ShowRepository showRepository;
 
-    public SeatService(SeatRepository seatRepository) {
+    public SeatService(SeatRepository seatRepository, TicketRepository ticketRepository, ShowRepository showRepository) {
         this.seatRepository = seatRepository;
-    }
-    @Transactional
-    public void reserveSeat(Long seatId) {
-        Seat seat = findSeatById(seatId);
-
-        if (seat.getSeatAvailability() == SeatAvailability.RESERVED) { // tjekker om sædet som er valgt har value = RESERVED (optaget)
-            throw new IllegalStateException("seat already taken"); // hvis ja, kommer der besked om at den er optaget
-        } else if (seat.getSeatAvailability() == SeatAvailability.HANDICAP) { // særlig besked hvis handicap sæde er valgt som forklarer brugeren
-            throw new RuntimeException("Dette er et Handicap sæde, hver klar til at vise Handicap kort ved indgangen til salen");
-        } else if (seat.getSeatAvailability() == SeatAvailability.OUT_OF_SERVICE) {
-            throw new IllegalStateException("This seat is out of service");
-        }
-
-        seat.setSeatAvailability(SeatAvailability.RESERVED); // hvis sædet != RESERVED (ikke er optaget) så ville det sæde som er valgt få typen Reserved (fordi du lige har valgt den)
-        seatRepository.save(seat); // gemmer de(t) valgte sæde(r) i databasen
+        this.ticketRepository = ticketRepository;
+        this.showRepository = showRepository;
     }
 
-    public List <Seat> findAllSeats() {
+    public List <ShowSeat> findAllSeats() {
         return seatRepository.findAll();
     }
 
-    public Seat findSeatById(Long seatId) {
-        return seatRepository.findById(seatId).orElseThrow(() -> new RuntimeException("seat: " + seatId + " not found"));
+    public ShowSeat findSeatById(Long seatId) {
+        return seatRepository.findById(seatId).orElseThrow(() -> new IllegalStateException("seat " + seatId + " not found"));
+    }
+
+    public List<ShowSeat> getSeatsForShow(Show show) {
+        List<ShowSeat> showSeats = seatRepository.findAllBySeatTheater(show.getTheater());
+
+        List<MovieTicket> tickets = ticketRepository.findByShow(show);
+
+        for (MovieTicket ticket : tickets) {
+            ShowSeat reservedShowSeat = ticket.getSeat();
+
+            for (ShowSeat showSeat : showSeats) {
+                if (showSeat.getShowSeatId().equals(reservedShowSeat.getShowSeatId())) {
+                    showSeat.setSeatAvailability(SeatAvailability.RESERVED);
+                }
+            }
+        }
+        return showSeats;
+    }
+
+    @Transactional
+    public void changeSeatTypeIfAdmin(Long showId, Long seatId, SeatAvailability newAvailability) {
+        Show show = showRepository.findById(showId).get();
+        ShowSeat showSeat = findSeatById(seatId);
+
+        if (newAvailability == SeatAvailability.RESERVED) {
+            throw new IllegalArgumentException("Cannot change seat type if type = reserved");
+        }
+
+        List<ShowSeat> showSeats = getSeatsForShow(show);
+
+        for (ShowSeat s : showSeats) {
+            if (s.getShowSeatId().equals(seatId)) {
+                s.setSeatAvailability(newAvailability);
+            }
+        }
     }
 }
