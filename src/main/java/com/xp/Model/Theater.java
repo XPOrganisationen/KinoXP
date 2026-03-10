@@ -1,9 +1,13 @@
 package com.xp.Model;
 
+import com.xp.Model.Cinema;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.util.Objects;
 
 @Entity
-@Table(name = "Theaters")
+@Table(name="theaters")
 public class Theater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,11 +18,21 @@ public class Theater {
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
+    @JsonBackReference
     private Cinema cinema;
 
     public Theater() {}
 
-    public Theater(String theaterName, Integer numberOfRows, Integer seatsPerRow) {
+    public Theater(Cinema cinema, String theaterName, Integer numberOfRows, Integer seatsPerRow) {
+        this.cinema = cinema;
+        this.theaterName = theaterName;
+        this.numberOfRows = numberOfRows;
+        this.seatsPerRow = seatsPerRow;
+    }
+
+    public Theater(Long theaterId, Cinema cinema, String theaterName, Integer numberOfRows, Integer seatsPerRow) {
+        this.theaterId = theaterId;
+        this.cinema = cinema;
         this.theaterName = theaterName;
         this.numberOfRows = numberOfRows;
         this.seatsPerRow = seatsPerRow;
@@ -58,5 +72,17 @@ public class Theater {
 
     public void setTheaterName(String theaterName) {
         this.theaterName = theaterName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Theater theater = (Theater) o;
+        return Objects.equals(theaterId, theater.theaterId) && Objects.equals(theaterName, theater.theaterName) && Objects.equals(numberOfRows, theater.numberOfRows) && Objects.equals(seatsPerRow, theater.seatsPerRow) && Objects.equals(cinema, theater.cinema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(theaterId, theaterName, numberOfRows, seatsPerRow, cinema);
     }
 }

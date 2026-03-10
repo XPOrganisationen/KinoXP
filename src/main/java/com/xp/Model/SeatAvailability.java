@@ -3,5 +3,6 @@ package com.xp.Model;
 public enum SeatAvailability {
     VACANT,
     RESERVED,
-    HANDICAP
+    HANDICAP,
+    OUT_OF_SERVICE
 }

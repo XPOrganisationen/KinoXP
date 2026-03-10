@@ -23,7 +23,7 @@ async function fetchDataFrom(URL) {
 function handleMovieClick(event) {
     let clickedMovieCard = event.target.closest(".movie-card");
     let clickedID = clickedMovieCard.getAttribute("data-movie-id");
-    window.location.href = `reservation.html?movieId=${clickedID}`;
+    window.location.href = `book_movie_time_slot.html?movieId=${clickedID}`;
 }
 
 function buildMovieCard(movie) {
