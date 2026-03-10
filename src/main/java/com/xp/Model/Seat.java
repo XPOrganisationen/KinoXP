@@ -24,16 +24,20 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatAvailability seatAvailability;
 
+    @Enumerated(EnumType.STRING)
+    private SeatType seatType;
+
     @Version
     private Long version;
 
     public Seat() {}
 
-    public Seat(Theater theater, Integer rowNumber, Integer seatNumber, SeatAvailability seatAvailability) {
+    public Seat(Theater theater, Integer rowNumber, Integer seatNumber, SeatAvailability seatAvailability, SeatType seatType) {
         this.theater = theater;
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
         this.seatAvailability = seatAvailability;
+        this.seatType = seatType;
     }
 
     public SeatAvailability getSeatAvailability() {
@@ -74,6 +78,14 @@ public class Seat {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public SeatType getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(SeatType seatType) {
+        this.seatType = seatType;
     }
 
     @Override

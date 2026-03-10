@@ -1,17 +1,14 @@
 package com.xp.Controller;
 
 
-import com.xp.Model.Movie;
-import com.xp.Model.MovieTicket;
-import com.xp.Model.SeatType;
-import com.xp.Model.TicketType;
+import com.xp.Model.*;
 import com.xp.Service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/(tickets?)")
+@RequestMapping("/api/tickets/")
 public class TicketController {
 
     private final TicketService ticketService;
@@ -37,5 +34,27 @@ public class TicketController {
                                       @RequestBody Movie movie)
     {
         return ticketService.calculateTotalPrice(ticketType, seatType, quantity, movie);
+    }
+
+    @PostMapping("/reserve")
+    public MovieTicket reserveTicket(@RequestParam Long showId,
+                                     @RequestParam Long seatId,
+                                     @RequestParam TicketType ticketType) {
+
+        Show show = ticketService.findShowById(showId);
+        Seat seat = ticketService.findSeatById(seatId);
+
+        return ticketService.createTicket(show, seat, ticketType);
+    }
+
+    @PostMapping("/show/{showId}/seat/{seatId}/override")
+    public String overrideSeatForShow(@PathVariable Long showId,
+                                      @PathVariable Long seatId,
+                                      @RequestParam SeatAvailability newAvailability) {
+
+        //check for admin here (if we get to it)
+
+        ticketService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
+        return "Seat-type changed for this show";
     }
 }

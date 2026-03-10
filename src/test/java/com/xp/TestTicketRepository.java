@@ -74,7 +74,7 @@ public class TestTicketRepository {
         show.setStartTime(LocalDateTime.now().plusDays(1));
         showRepository.save(show);
 
-        seat = new Seat(theater, 1, 1, SeatAvailability.VACANT);
+        seat = new Seat(theater, 1, 1, SeatAvailability.VACANT, SeatType.NORMAL);
         seatRepository.save(seat);
 
         reservation = new Reservation();
