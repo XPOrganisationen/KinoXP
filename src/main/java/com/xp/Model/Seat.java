@@ -29,6 +29,8 @@ public class Seat {
 
     @Version
     private Long version;
+    // @Version
+    // private Long version;
 
     public Seat() {}
 

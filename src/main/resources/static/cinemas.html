@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose cinema</title>
+    <style>
+        body
+        {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        h1
+        {
+            margin-bottom: 1rem
+        }
+        .layout
+        {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .cinema-list, .cinema-details
+        {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .cinema-button
+        {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid #999;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .cinema-button:hover
+        {
+            background: #f3f3f3;
+        }
+
+        .selected
+        {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .map-link
+        {
+            display: inline-block;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<h1>Choose cinema</h1>
+<div class="layout">
+    <section class="cinema-list">
+        <h2>Cinemas</h2>
+        <div id="cinemaList">
+            <p>Loading cinemas..</p>
+        </div>
+    </section>
+
+    <section class="cinema-details">
+        <h2>Selected cinema</h2>
+        <div id="cinema-details">
+            <p>Choose cinema from the list of cinemas</p>
+        </div>
+    </section>
+</div>
+
+<script src="cinemas.js"></script>
+</body>
+</html>

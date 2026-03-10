@@ -3,6 +3,7 @@ package com.xp.Model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "Cinemas")
@@ -11,12 +12,21 @@ public class Cinema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cinemaId;
 
+    @OneToMany(mappedBy = "cinema")
+    private List<Theater> theaters;
+
     private String cinemaName; // Remember that this becomes snake_case in the DB by default
     private String cinemaAddress;
 
     public Cinema() {}
 
     public Cinema(String cinemaName, String cinemaAddress) {
+        this.cinemaName = cinemaName;
+        this.cinemaAddress = cinemaAddress;
+    }
+
+    public Cinema(Long cinemaId, String cinemaName, String cinemaAddress) {
+        this.cinemaId = cinemaId;
         this.cinemaName = cinemaName;
         this.cinemaAddress = cinemaAddress;
     }
