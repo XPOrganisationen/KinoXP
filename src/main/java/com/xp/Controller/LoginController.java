@@ -1,7 +1,9 @@
 package com.xp.Controller;
 
+import com.xp.Model.DTOs.EmployeeCredentials;
 import com.xp.Service.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 //Jeg ved ikke hvordan man skal tilgå en html side via en form, hvis man ikke bruger thymeleaf.
 @RestController
@@ -18,12 +20,10 @@ public class LoginController {
         return "login-page";
     }
 
+
     @PostMapping("/login")
-    public String login(String username, String password) {
-        if (adminServiceImpl.login(username, password)) {
-            return "admin-page";
-        }
-        return "login-page";
+    public Boolean login(@RequestBody EmployeeCredentials employeeCredentials) {
+        return adminServiceImpl.login(employeeCredentials.username(), employeeCredentials.password());
     }
 
     @GetMapping("/logout")

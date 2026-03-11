@@ -1,30 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <title>XPKino - Employees</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="favicon.png">
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            margin-bottom: 2rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        tbody tr {
+            cursor: pointer;
+        }
+
+        tbody tr td button {
+            pointer-events: all;
+        }
+    </style>
+    <title>Employee Page</title>
 </head>
+
 <body>
-<header id="index-header">
-    <a href="index.html">Log out</a>
-    <div class="spacer" aria-hidden="true"></div>
-    <h2>KinoXP</h2>
-    <div class="spacer" aria-hidden="true"></div>
-</header>
-<main>
-    <h2>Ansatte</h2>
+<h1 class="text-center">Ansatte</h1>
 
-    <table id="employeeTable">
-        <tr>
-            <th>Navn</th><th>Rolle</th>
-        </tr>
-    </table>
+<form id="employeeForm">
+    <input type="hidden" id="employeeId" name="id">
+    <input type="text" id="employeeName" name="name" placeholder="Indtast navn på ansat" required>
+    <input type="text" id="employeeRole" name="role" placeholder="Indtast rolle for ansat" required>
+    <input type="hidden" id="adminId" name="adminId">
+    <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">Cancel Edit</button>
+    <button type="submit" class="btn btn-primary">Tilføj Ansat</button>
+</form>
 
-</main>
+<table class="table">
+    <thead>
+    <tr>
+        <!--<th scope="col">ID</th>-->
+        <!--<th scope="col">Admin ID</th>-->
+        <th scope="col">Name</th>
+        <th scope="col">Rolle</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody id="employeeTableBody">
+    </tbody>
+</table>
+
+<script type="module" src="./app.js"></script>
 </body>
-//Her kan man indsætte scripts til hentning af data og muligvis tilføjelse/redigering/slettelse af data via popups/sider.
-<script src="employee.js"></script>
+
 </html>
