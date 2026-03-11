@@ -1,5 +1,5 @@
 const cinemaListDiv = document.getElementById("cinemaList");
-const cinemaDetailsDiv = document.getElementById("cinemaDetails");
+const cinemaDetailsDiv = document.getElementById("cinema-details");
 
 let selectedCinemaId = null;
 
@@ -30,6 +30,7 @@ function renderCinemaList(cinemas)
     if (cinemas.length === 0)
     {
         cinemaListDiv.innerHTML = "<p>No cinemas found.</p>";
+        cinemaDetailsDiv.innerHTML = "<p>No cinema details available.</p>";
         return;
     }
 
