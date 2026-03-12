@@ -35,20 +35,7 @@ public class SeatService {
     }
 
     public List<ShowSeat> getSeatsForShow(Show show) {
-        List<ShowSeat> showSeats = seatRepository.findAllBySeatTheater(show.getTheater());
-
-        List<MovieTicket> tickets = ticketRepository.findByShow(show);
-
-        for (MovieTicket ticket : tickets) {
-            ShowSeat reservedShowSeat = ticket.getSeat();
-
-            for (ShowSeat showSeat : showSeats) {
-                if (showSeat.getShowSeatId().equals(reservedShowSeat.getShowSeatId())) {
-                    showSeat.setSeatAvailability(SeatAvailability.RESERVED);
-                }
-            }
-        }
-        return showSeats;
+        return seatRepository.findAllByShow(show);
     }
 
     @Transactional

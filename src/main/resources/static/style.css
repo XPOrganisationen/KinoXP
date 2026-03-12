@@ -136,3 +136,70 @@ body {
 #index-header .spacer {
     flex: 1;
 }
+
+#seat-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    grid-template-rows: repeat(var(--rows), 1fr);
+    grid-gap: 8px;
+    width: 75%;
+    height: 75%;
+    align-items: center;
+    margin: auto;
+    border-radius: 6px;
+}
+
+#seat-availability-indicator-grid ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+}
+
+[class^="seat-"] {
+    width: 40px;
+    height: 40px;
+}
+
+.seat-vacant, .indicator-vacant {
+    background-color: green;
+}
+
+.seat-reserved, .indicator-reserved {
+    background-color: red;
+}
+
+.seat-handicap, .indicator-handicap {
+    background-color: blue;
+}
+
+.seat-out_of_service, .indicator-out_of_service {
+    background-color: lightblue;
+}
+
+.seat-reserved-by-you, .indicator-reserved-by-you {
+    background-color: yellow;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}

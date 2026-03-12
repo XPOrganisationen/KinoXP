@@ -60,4 +60,9 @@ public class TicketController {
         seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
         return "Seat-type changed for this show";
     }
+
+    @GetMapping("all-ticket-types")
+    public List<TicketType> getAllTicketTypes() {
+        return List.of(TicketType.values());
+    }
 }
