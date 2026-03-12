@@ -18,7 +18,7 @@ public interface CinemaRepository extends JpaRepository <Cinema, Long>
     @Query("""
             SELECT DISTINCT c
             FROM Cinema c
-            LEFT JOIN c.theaters
+            LEFT JOIN Theater
             ORDER BY c.cinemaName ASC
             """)
     List<Cinema> findAllWithTheaters();

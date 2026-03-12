@@ -24,7 +24,7 @@ function initPaymentPage()
 
 function getPendingOrder()
 {
-    const raw = sessionStorage.getItem("pendingOrder");
+    const raw = localStorage.getItem("pendingOrder");
     if(!raw) return null;
 
     try

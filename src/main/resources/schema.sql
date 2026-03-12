@@ -81,7 +81,7 @@ CREATE TABLE movie_tickets (
     show_id BIGINT,
     show_seat_id BIGINT,
     reservation_id BIGINT,
-    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    ticket_type ENUM('CHILD', 'ADULT', 'SENIOR'),
     FOREIGN KEY (show_seat_id) REFERENCES show_seats(show_seat_id) ON DELETE CASCADE,
     FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE
 );

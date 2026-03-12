@@ -37,26 +37,69 @@ async function fetchDataFrom(URL, options) {
     return await response.json();
 }
 
-async function handlePayClicked(event, showId) {
-    for (let i = 0; i < seatsPicked.length; i++) {
-        let sp = seatsPicked[i];
-        let reservationDTO = {showId: showId, seatId: sp.seatId, ticketType: ticketTypes[i]};
-
-        let options = {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(reservationDTO)
-        };
-
-        await fetchDataFrom('http://localhost:8080/api/tickets/reserve', options);
+async function buildOrderObject(reservation) {
+    if (seatsPicked.length === 0) {
+        return;
     }
 
-    // Then save the two global lists in browser storage
-    // and redirect to pay.html.
-    localStorage.setItem('payData', JSON.stringify({seatsPicked: seatsPicked, ticketTypes: ticketTypes}));
-    // Patrick skal bruge JSON.parse(localStorage.getItem('payData');
+    let cinema = reservation.show.theater.cinema;
+    let theater = reservation.show.theater;
+    let showTime = reservation.show.startTime;
+
+    let seats = reservation.movieTickets.map(ticket => {
+        let seat = ticket.showSeat.seat;
+        return {
+            row: seat.rowNumber,
+            number: seat.seatNumber,
+            ticketType: ticket.ticketType,
+            price: ticket.price
+        }
+    })
+    let totalPrice = reservation.totalPrice;
+
+    return {cinemaName: cinema.cinemaName,
+        theaterName: theater.theaterName,
+        showTime,
+        seats,
+        reservationFee: calculateReservationFee(totalPrice, ticketTypes.length),
+        totalPrice};
+}
+
+function calculateReservationFee(totalPrice, numTickets) {
+    let revisedTotal = totalPrice;
+
+    if (numTickets <= 5) {
+        revisedTotal = totalPrice * 1.05;
+    }
+
+    if (numTickets >= 10) {
+        revisedTotal = totalPrice * 0.93;
+    }
+
+    return revisedTotal - totalPrice;
+}
+
+async function handlePayClicked(event, showId) {
+    let show = await fetchDataFrom(`http://localhost:8080/api/shows/${showId}`);
+    let movieTicketData = [];
+    for (let i = 0; i < seatsPicked.length; i++) {
+        movieTicketData.push({showSeat: seatsPicked[i], ticketType: ticketTypes[i]});
+    }
+
+    let reservation = {show, movieTickets: movieTicketData};
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(reservation)
+    };
+
+    reservation = await fetchDataFrom(`http://localhost:8080/api/reservations`, options);
+    let orderObj = await buildOrderObject(reservation);
+    let orderJson = JSON.stringify(orderObj);
+    localStorage.setItem('pendingOrder', orderJson);
     window.location.href = 'pay.html';
 }
 

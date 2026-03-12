@@ -1,5 +1,6 @@
 package com.xp.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -9,9 +10,11 @@ import java.util.Objects;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("movieId")
     private Long movieId;
     private String movieTitle;
     private String movieDescription;
+    @JsonProperty("movieDuration")
     private Double movieDurationMinutes;
     private String movieCategory;
     private Integer ageLimit;
@@ -42,7 +45,9 @@ public class Movie {
         return movieId;
     }
 
-    public void setMovieId(Long movieId) {}
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
+    }
 
     public Integer getAgeLimit() {
         return ageLimit;
