@@ -78,10 +78,9 @@ CREATE TABLE reservations (
 CREATE TABLE movie_tickets (
             movie_ticket_id BIGINT PRIMARY KEY AUTO_INCREMENT,
             price DOUBLE,
-            show_id BIGINT,
             show_seat_id BIGINT,
             reservation_id BIGINT,
-            FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+            ticket_type VARCHAR(10) CHECK (ticket_type IN ('CHILD','ADULT','SENIOR')),
             FOREIGN KEY (show_seat_id) REFERENCES show_seats(show_seat_id) ON DELETE CASCADE,
             FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE
 );

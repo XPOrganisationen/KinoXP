@@ -1,4 +1,5 @@
 USE xpdb;
+
 INSERT INTO movies (movie_title, movie_description, movie_duration_minutes, movie_category, age_limit, is_3d) VALUES
 ('Space Adventure', 'Sci-fi epic', 130, 'Sci-Fi', 12, TRUE),
 ('Romantic Comedy', 'Light romance', 95, 'RomCom', 10, FALSE),
@@ -49,7 +50,7 @@ INSERT INTO shows (movie_id, theater_id, start_time) VALUES
 (5, 3, DATE_ADD(NOW(), INTERVAL 15 MINUTE)),
 (2, 3, DATE_ADD(NOW(), INTERVAL 2 DAY));
 
--- Populate show_seats for each show (set availability = 'AVAILABLE')
+-- Populate show_seats for each show (set availability = 'VACANT')
 INSERT INTO show_seats (show_id, seat_id, seat_availability)
 SELECT s.show_id, st.seat_id, 'VACANT'
 FROM shows s
@@ -64,7 +65,7 @@ SET @show_doc = (SELECT show_id FROM shows WHERE movie_id=4 LIMIT 1);
 SET @show_anim = (SELECT show_id FROM shows WHERE movie_id=5 LIMIT 1);
 SET @show_romcom_future = (SELECT show_id FROM shows WHERE movie_id=2 AND theater_id=3 LIMIT 1);
 
--- Pick show_seat_ids (ordered by row/showSeat) for seats we intend to reserve
+-- Pick show_seat_ids (ordered by row/seat) for seats we intend to reserve
 SET @t1_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1);
 SET @t1_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
 SET @t1_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);

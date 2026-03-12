@@ -16,10 +16,10 @@ public interface CinemaRepository extends JpaRepository <Cinema, Long>
     List<Cinema> findByCinemaAddressContainingIgnoreCase(String cinemaAddress);
 
     @Query("""
-            SELECT DISTINCT c
-            FROM Cinema c
-            LEFT JOIN c.theaters
-            ORDER BY c.cinemaName ASC
-            """)
+        SELECT DISTINCT c
+        FROM Cinema c
+        LEFT JOIN Theater t ON t.cinema = c
+        ORDER BY c.cinemaName ASC
+    """)
     List<Cinema> findAllWithTheaters();
 }

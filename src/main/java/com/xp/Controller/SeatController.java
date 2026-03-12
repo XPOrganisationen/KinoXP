@@ -2,6 +2,7 @@ package com.xp.Controller;
 
 
 import com.xp.Model.SeatAvailability;
+import com.xp.Model.SeatType;
 import com.xp.Model.ShowSeat;
 import com.xp.Model.Show;
 import com.xp.Service.SeatService;
@@ -16,12 +17,10 @@ import java.util.List;
 public class SeatController {
 
     private final SeatService seatService;
-    private final TicketService ticketService;
     private final ShowService showService;
 
-    public SeatController(SeatService seatService, TicketService ticketService, ShowService showService) {
+    public SeatController(SeatService seatService, ShowService showService) {
         this.seatService = seatService;
-        this.ticketService = ticketService;
         this.showService = showService;
     }
 
@@ -44,5 +43,11 @@ public class SeatController {
     @GetMapping("get-all-seat-availability-options")
     public List<SeatAvailability> getAllSeatAvailabilityOptions() {
         return List.of(SeatAvailability.values());
+    }
+
+    @GetMapping("{seatId}/get-price")
+    public Double getPrice(@PathVariable Long seatId) {
+        ShowSeat showSeat = getSeatById(seatId);
+        return showSeat.getSeat().getSeatType().getPriceAdjustment();
     }
 }

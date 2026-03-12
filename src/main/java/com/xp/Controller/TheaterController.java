@@ -25,6 +25,7 @@ public class TheaterController {
 
     @GetMapping("/{theaterId}")
     public Theater findTheaterById(@PathVariable Long theaterId) {
+        Theater theater = theaterService.findTheaterById(theaterId);
         return theaterService.findTheaterById(theaterId);
     }
 

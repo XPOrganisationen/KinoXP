@@ -29,19 +29,21 @@ public interface MovieRepository extends JpaRepository <Movie, Long> {
            SELECT m.*
            FROM movies m
            JOIN (
-                SELECT s.movie_id, MIN(s.start_time) AS next_start_time
-                FROM shows s
-                JOIN theaters th ON th.theater_id = s.theater_id
-                LEFT JOIN (
-                    SELECT mt.show_id, COUNT(*) AS sold_tickets
-                    FROM movie_tickets mt
-                    GROUP BY mt.show_id
-                ) sold ON sold.show_id = s.show_id
-                WHERE s.start_time > NOW()
-                AND (COALESCE(th.number_of_rows,0) * COALESCE(th.seats_per_row,0)) > COALESCE(sold.sold_tickets,0)
-                GROUP BY s.movie_id
-           ) avail ON avail.movie_id = m.movie_id
-           ORDER BY TIMESTAMPDIFF(MINUTE, NOW(), avail.next_start_time) ASC;
+               SELECT s.movie_id,
+               MIN(s.start_time) AS next_start_time
+               FROM shows s
+               JOIN theaters th ON th.theater_id = s.theater_id
+               LEFT JOIN (
+                   SELECT ss.show_id, COUNT(*) AS sold_tickets
+                   FROM movie_tickets mt
+                   JOIN show_seats ss ON mt.show_seat_id = ss.show_seat_id
+                   GROUP BY ss.show_id
+               ) sold ON sold.show_id = s.show_id
+               WHERE s.start_time > CURRENT_TIMESTAMP
+               AND (COALESCE(th.number_of_rows, 0) * COALESCE(th.seats_per_row, 0)) > COALESCE(sold.sold_tickets, 0)
+               GROUP BY s.movie_id
+            ) avail ON avail.movie_id = m.movie_id
+           ORDER BY TIMESTAMPDIFF(MINUTE, CURRENT_TIMESTAMP, avail.next_start_time) ASC;
            """, nativeQuery = true)
     List<Movie> findAllOrderByAvailableSeatsShownSoon();
 

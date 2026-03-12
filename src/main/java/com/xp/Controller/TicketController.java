@@ -30,24 +30,12 @@ public class TicketController {
         return ticketService.findMovieTicketById(id);
     }
 
-    @PostMapping("/calculate")
-    public double calculateTotalPrice(@RequestParam TicketType ticketType,
-                                      @RequestParam SeatType seatType,
-                                      @RequestParam int quantity,
-                                      @RequestBody Movie movie)
-    {
-        return ticketService.calculateTotalPrice(ticketType, seatType, quantity, movie);
-    }
-
     @PostMapping("/reserve")
-    public MovieTicket reserveTicket(@RequestParam Long showId,
-                                     @RequestParam Long seatId,
+    public MovieTicket reserveTicket(@RequestParam Long seatId,
                                      @RequestParam TicketType ticketType) {
 
-        Show show = ticketService.findShowById(showId);
-        ShowSeat showSeat = ticketService.findSeatById(seatId);
-
-        return ticketService.createTicket(show, showSeat, ticketType);
+        ShowSeat showSeat = seatService.findSeatById(seatId);
+        return ticketService.createTicket(showSeat, ticketType);
     }
 
     @PostMapping("/show/{showId}/seat/{seatId}/override")
