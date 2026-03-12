@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.Objects;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="theaters")
 public class Theater {
