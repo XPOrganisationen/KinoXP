@@ -34,6 +34,14 @@ CREATE TABLE IF NOT EXISTS theaters (
     FOREIGN KEY (cinema_id) REFERENCES cinemas(cinema_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS employees (
+    employee_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    employee_username TEXT,
+    employee_name TEXT,
+    employee_password TEXT,
+    employee_role TEXT
+);
+
 CREATE TABLE shows (
 	show_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     movie_id BIGINT,

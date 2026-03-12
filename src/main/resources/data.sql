@@ -9,6 +9,13 @@ INSERT INTO cinemas (cinema_name, cinema_address) VALUES
 ('Downtown Cinema', '123 Main St'),
 ('Mall Cinema', '45 Shopping Ave');
 
+
+INSERT INTO employees (employee_username, employee_name, employee_password, employee_role) VALUES
+('mabr0011', 'Markus', '1234', 'admin'),
+('masc1001', 'Max-Emil', '2345', 'admin'),
+('fija0001', 'Filip', '3456', 'employee'),
+('pajo0001', 'Patrick', '4567', 'employee');
+
 INSERT INTO theaters (theater_name, number_of_rows, seats_per_row, cinema_id) VALUES
 ('Screen 1', 5, 6, 1),
 ('Screen 2', 3, 4, 1),

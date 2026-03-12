@@ -64,10 +64,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public boolean login(String username, String password) {
         Employee employee = employeeRepository.findEmployeeByEmployeeUsername(username);
-        if (employee.getEmployeeRole().equals("admin")) {
-            return employee.getEmployeePassword().equals(password);
+        if (employee == null) {
+            throw new EntityDoesNotExistException("Employee not found");
         }
-        throw new DataAccessException("That employee does not have admin privileges");
+        if (!employee.getEmployeeRole().equalsIgnoreCase("admin")) {
+            throw new DataAccessException("That employee does not have admin privileges");
+        }
+        return employee.getEmployeePassword().equals(password);
     }
 
 }

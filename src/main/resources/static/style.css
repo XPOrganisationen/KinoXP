@@ -136,3 +136,35 @@ body {
 #index-header .spacer {
     flex: 1;
 }
+
+tbody tr:last-child {
+    background-color: #f2f2f2;
+}
+
+.admin-link, .logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px 0;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.admin-link:hover, .logout-button:hover {
+    background-color: #0056b3;
+}
+
+.admin-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.logout-button {
+    float: right;
+    margin-right: 20px;
+}
