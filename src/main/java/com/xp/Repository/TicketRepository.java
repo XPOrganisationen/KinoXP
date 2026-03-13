@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository <MovieTicket, Long> {
-    boolean existsByShowAndSeat(Show show, ShowSeat showSeat);
-
-    List<MovieTicket> findByShow(Show show);
+    boolean existsByShowSeat(ShowSeat showSeat);
+    List<MovieTicket> findByShowSeat(ShowSeat showSeat);
 }

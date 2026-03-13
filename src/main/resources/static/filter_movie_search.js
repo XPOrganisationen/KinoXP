@@ -11,10 +11,10 @@ async function initApp() {
 
 async function handleCategorySubmit(event) {
     event.preventDefault();
-    let formData = new FormData(document.querySelector('#sidebar-filter'));
     let categories = [...document.querySelectorAll('input[type=checkbox]:checked')].map(checkbox => checkbox.id);
     let searchTerm = document.querySelector('#search-input').value;
-    let filter = {categories: categories, title: searchTerm};
+    let ageLimit = Number.parseInt(document.querySelector('#age-input').value);
+    let filter = {categories: categories, ageLimit: ageLimit,  title: searchTerm};
 
     let options = {
         method: 'POST',

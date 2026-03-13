@@ -74,13 +74,22 @@ public class TicketController {
     }
 
     @PostMapping("/reserve")
-    public MovieTicket reserveTicket(@RequestParam Long showId,
-                                     @RequestParam Long seatId,
+    public MovieTicket reserveTicket(@RequestParam Long seatId,
                                      @RequestParam TicketType ticketType) {
 
-        Show show = ticketService.findShowById(showId);
-        ShowSeat showSeat = ticketService.findSeatById(seatId);
+        ShowSeat showSeat = seatService.findSeatById(seatId);
+        return ticketService.createTicket(showSeat, ticketType);
+    }
+}
 
-        return ticketService.createTicket(show, showSeat, ticketType);
+        //check for admin here (if we get to it)
+
+        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
+        return "Seat-type changed for this show";
+    }
+
+    @GetMapping("all-ticket-types")
+    public List<TicketType> getAllTicketTypes() {
+        return List.of(TicketType.values());
     }
 }

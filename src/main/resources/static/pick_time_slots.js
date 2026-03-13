@@ -40,7 +40,7 @@ function buildTheaterBoxes(theaterGroup) {
 
     theaterGroup.shows.forEach(show => {
        let linkToSeats = document.createElement('a');
-       linkToSeats.href = `book_seats.html?theaterId=${theaterGroup.theaterId}&showId=${show.showId}`;
+       linkToSeats.href = `book_seat.html?theaterId=${theaterGroup.theaterId}&showId=${show.showId}`;
        let timeField = document.createElement('li');
        timeField.classList.add('timeField');
        timeField.setAttribute("data-show-id", show.showId);

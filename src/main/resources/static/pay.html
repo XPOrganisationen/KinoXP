@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <title>KinoXP - Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+<header id="index-header">
+<a href="login.html">Login</a>
+<h2>KinoXP</h2>
+<a href="index.html">Purchase Tickets</a>
+</header>
+<main class="payment-page">
+    <section class="payment-card">
+        <div class="payment-left">
+            <h1 id="payment-movie-title">Movie title</h1>
+            <p id="payment-show-info" class="payment-subtext">Date</p>
+
+            <form id="payment-form">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" required/>
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
+
+                <label for="cardNumber">Card number</label>
+                <input id="cardNumber" name="cardNumber" type="text" minlength="16" maxlength="19" required>
+
+                <label for="cvc">CVC</label>
+                <input id="cvc" name="cvc" type="text" maxlength="3" minlength="3" required>
+
+                <div class="payment-actions">
+                    <button type="button" id="cancel-payment-btn" class="danger-btn">Cancel</button>
+                    <button type="submit" class="success-btn">Pay</button>
+                </div>
+            </form>
+        </div>
+
+        <aside class="payment-summary">
+            <h2>Price calculation</h2>
+            <div id="summary-content" class="summary-content">
+                <p>Loading order...</p>
+            </div>
+
+            <p class="payment-total">
+                Total: <span id="payment-total">0,00 DKK</span>
+            </p>
+        </aside>
+    </section>
+</main>
+
+<script src="pay.js"></script>
+</body>
+</html>

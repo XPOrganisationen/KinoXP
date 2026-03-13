@@ -2,6 +2,7 @@ package com.xp.Service;
 
 import com.xp.Model.Cinema;
 import com.xp.Repository.CinemaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class CinemaService
 
     public List<Cinema> getAllCinemas()
     {
-        return cinemaRepository.findAllByOrderByCinemaNameAsc();
+        return cinemaRepository.findAll(Sort.by(Sort.Direction.ASC, "cinema_name"));
     }
 
     public List<Cinema> getAllCinemasWithTheaters()

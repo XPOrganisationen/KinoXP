@@ -41,7 +41,9 @@ public class Show {
     public Long getShowId() {
         return showId;
     }
-    public void setShowId(Long showId) {}
+    public void setShowId(Long showId) {
+        this.showId = showId;
+    }
 
     public Movie getMovie() {
         return movie;

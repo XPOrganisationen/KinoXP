@@ -9,16 +9,30 @@ import java.util.List;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reservationId;
+    private Long reservationId;
 
     @ManyToOne
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "reservation_id")
     private List<MovieTicket> movieTickets;
 
+    private double totalPrice;
+
     public Reservation() {}
+
+    public Reservation(Show show, List<MovieTicket> movieTickets) {
+        this.show = show;
+        this.movieTickets = movieTickets;
+    }
+
+    public Reservation(Show show, List<MovieTicket> movieTickets, double totalPrice) {
+        this.show = show;
+        this.movieTickets = movieTickets;
+        this.totalPrice = totalPrice;
+    }
 
     public List<MovieTicket> getMovieTickets() {
         return movieTickets;
@@ -36,7 +50,19 @@ public class Reservation {
         this.show = show;
     }
 
-    public Integer getReservationId() {
+    public Long getReservationId() {
         return reservationId;
+    }
+
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

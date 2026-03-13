@@ -1,7 +1,6 @@
-
 INSERT INTO movies (movie_title, movie_description, movie_duration_minutes, movie_category, age_limit, is_3d) VALUES
-('Space Adventure', 'Sci-fi epic', 130, 'Sci-Fi', 12, TRUE),
-('Romantic Comedy', 'Light romance', 95, 'RomCom', 10, FALSE),
+('Space Adventure', 'Sci-fi epic', 130, 'Science Fiction', 12, TRUE),
+('Romantic Comedy', 'Light romance', 95, 'Romantic Comedy', 10, FALSE),
 ('Horror Night', 'Spine-chilling horror', 100, 'Horror', 18, FALSE),
 ('Documentary: Nature', 'Wildlife documentary', 60, 'Documentary', 0, FALSE),
 ('Animated Fun', 'Family animation', 80, 'Animation', 0, TRUE);
@@ -69,21 +68,21 @@ INSERT INTO reservations (show_id, customer_name, customer_email, reservation_ti
 ((SELECT show_id FROM shows WHERE movie_id=5 LIMIT 1), 'Eve Sample', 'eve@example.com', CURRENT_TIMESTAMP, 9.00);
 
 
-INSERT INTO movie_tickets (price, show_id, show_seat_id, reservation_id)
+INSERT INTO movie_tickets (price, show_seat_id, reservation_id, ticket_type)
 SELECT 12.50,
-       (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1),
        (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1) ORDER BY s.ro_number, s.seat_number LIMIT 1),
-       (SELECT reservation_id FROM reservations WHERE customer_email='alice@example.com' LIMIT 1)
+    (SELECT reservation_id FROM reservations WHERE customer_email='alice@example.com' LIMIT 1),
+    'ADULT'
 UNION ALL
 SELECT 12.50,
-       (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1),
        (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1) ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1),
-       (SELECT reservation_id FROM reservations WHERE customer_email='frank@example.com' LIMIT 1)
+    (SELECT reservation_id FROM reservations WHERE customer_email='frank@example.com' LIMIT 1),
+    'ADULT'
 UNION ALL
 SELECT 12.50,
-       (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1),
        (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = (SELECT show_id FROM shows WHERE movie_id=3 LIMIT 1) ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2),
-       (SELECT reservation_id FROM reservations WHERE customer_email='gina@example.com' LIMIT 1);
+    (SELECT reservation_id FROM reservations WHERE customer_email='gina@example.com' LIMIT 1),
+    'ADULT';
 
 
 UPDATE show_seats

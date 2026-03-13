@@ -1,5 +1,6 @@
 package com.xp.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,32 +9,40 @@ public class MovieTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_ticket_id")
+    @JsonProperty("movieTicketId")
     private Long movieTicketId;
 
+    @JsonProperty("price")
     private Double price;
-
-    @ManyToOne
-    @JoinColumn(name = "show_id", nullable = false)
-    private Show show;
 
     @OneToOne
     @JoinColumn(name = "show_seat_id", nullable = false)
+    @JsonProperty("showSeat")
     private ShowSeat showSeat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservation;
+    @Enumerated(EnumType.STRING)
+    @JsonProperty("ticketType")
+    private TicketType ticketType;
 
     public MovieTicket() {}
 
-    public MovieTicket(Double price, Show show, ShowSeat showSeat) {
-        this.price = price;
-        this.show = show;
+    public MovieTicket(ShowSeat showSeat, TicketType ticketType) {
         this.showSeat = showSeat;
+        this.ticketType = ticketType;
+    }
+
+    public MovieTicket(Double price, ShowSeat showSeat, TicketType ticketType) {
+        this.price = price;
+        this.showSeat = showSeat;
+        this.ticketType = ticketType;
     }
 
     public Long getMovieTicketId() {
         return movieTicketId;
+    }
+
+    public void setMovieTicketId(Long movieTicketId) {
+        this.movieTicketId = movieTicketId;
     }
 
     public Double getPrice() {
@@ -52,19 +61,11 @@ public class MovieTicket {
         this.showSeat = showSeat;
     }
 
-    public Show getShow() {
-        return show;
+    public TicketType getTicketType() {
+        return ticketType;
     }
 
-    public void setShow(Show show) {
-        this.show = show;
-    }
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
 }
