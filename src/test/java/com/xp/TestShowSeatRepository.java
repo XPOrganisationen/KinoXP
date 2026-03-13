@@ -6,7 +6,6 @@ import com.xp.Repository.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestShowSeatRepository {
 
     @Autowired
-    private SeatRepository seatRepository;
+    private ShowSeatRepository showSeatRepository;
 
     @Autowired
     private ShowRepository showRepository;
@@ -35,15 +34,13 @@ public class TestShowSeatRepository {
     @Autowired
     private MovieRepository movieRepository;
 
-    private Cinema cinema;
     private Theater bigTheater;
     private Theater smallTheater;
     private Show testShow;
-    private Movie movie;
 
     @BeforeEach
     void setUp() {
-        cinema = new Cinema();
+        Cinema cinema = new Cinema();
         cinema.setCinemaAddress("Test Cinema");
         cinemaRepository.save(cinema);
 
@@ -53,7 +50,7 @@ public class TestShowSeatRepository {
         smallTheater = new Theater(cinema, "Small Theater", 15, 10);
         theaterRepository.save(smallTheater);
 
-        movie = new Movie();
+        Movie movie = new Movie();
         movie.setMovieTitle("Transformers");
         movie.setMovieDuration(134.0);
         movie.setMovieCategory("Action");
@@ -68,16 +65,16 @@ public class TestShowSeatRepository {
 
     @Test
     void findAll_returnsShowSeats() {
-        List<ShowSeat> showSeatsBefore = seatRepository.findAll();
+        List<ShowSeat> showSeatsBefore = showSeatRepository.findAll();
         Seat seat1 = new Seat(bigTheater, 2, 2, SeatType.NORMAL);
         Seat seat2 = new Seat(bigTheater, 2, 5, SeatType.NORMAL);
 
         ShowSeat s1 = new ShowSeat(seat1, testShow, SeatAvailability.VACANT);
         ShowSeat s2 = new ShowSeat(seat2, testShow, SeatAvailability.VACANT);
-        seatRepository.save(s1);
-        seatRepository.save(s2);
+        showSeatRepository.save(s1);
+        showSeatRepository.save(s2);
 
-        List<ShowSeat> showSeats = seatRepository.findAll();
+        List<ShowSeat> showSeats = showSeatRepository.findAll();
 
         assertEquals(showSeatsBefore.size() + 2, showSeats.size());
     }
@@ -91,11 +88,11 @@ public class TestShowSeatRepository {
         ShowSeat s1 = new ShowSeat(seat1, testShow, SeatAvailability.VACANT);
         ShowSeat s2 = new ShowSeat(seat2, testShow, SeatAvailability.RESERVED);
         ShowSeat s3 = new ShowSeat(seat3, testShow, SeatAvailability.VACANT);
-        seatRepository.save(s1);
-        seatRepository.save(s2);
-        seatRepository.save(s3);
+        showSeatRepository.save(s1);
+        showSeatRepository.save(s2);
+        showSeatRepository.save(s3);
 
-        List<ShowSeat> bigShowSeats = seatRepository.findAllByShow(testShow);
+        List<ShowSeat> bigShowSeats = showSeatRepository.findAllByShow(testShow);
 
         assertEquals(3, bigShowSeats.size());
         for (ShowSeat s : bigShowSeats) {
@@ -112,11 +109,11 @@ public class TestShowSeatRepository {
         ShowSeat s1 = new ShowSeat(seat1, testShow, SeatAvailability.VACANT);
         ShowSeat s2 = new ShowSeat(seat2, testShow, SeatAvailability.RESERVED);
         ShowSeat s3 = new ShowSeat(seat3, testShow, SeatAvailability.VACANT);
-        seatRepository.save(s1);
-        seatRepository.save(s2);
-        seatRepository.save(s3);
+        showSeatRepository.save(s1);
+        showSeatRepository.save(s2);
+        showSeatRepository.save(s3);
 
-        List<ShowSeat> availableShowSeats = seatRepository.findAllByShowAndSeatAvailability(testShow, SeatAvailability.VACANT);
+        List<ShowSeat> availableShowSeats = showSeatRepository.findAllByShowAndSeatAvailability(testShow, SeatAvailability.VACANT);
 
         assertEquals(2, availableShowSeats.size());
         for (ShowSeat s : availableShowSeats) {
@@ -129,7 +126,7 @@ public class TestShowSeatRepository {
         Seat seat = new Seat(bigTheater, 3, 4, SeatType.NORMAL);
 
         ShowSeat showSeat = new ShowSeat(seat, testShow, SeatAvailability.VACANT);
-        ShowSeat savedShowSeat = seatRepository.save(showSeat);
+        ShowSeat savedShowSeat = showSeatRepository.save(showSeat);
 
         assertEquals(3, savedShowSeat.getSeat().getRowNumber());
         assertEquals(4, savedShowSeat.getSeat().getSeatNumber());
@@ -146,7 +143,7 @@ public class TestShowSeatRepository {
         Show anotherShow = new Show(anotherMovie, smallTheater, LocalDateTime.now());
         showRepository.save(anotherShow);
 
-        List<ShowSeat> showSeats = seatRepository.findAllByShow(anotherShow);
+        List<ShowSeat> showSeats = showSeatRepository.findAllByShow(anotherShow);
 
         assertEquals(0, showSeats.size());
     }
@@ -164,10 +161,10 @@ public class TestShowSeatRepository {
         Show anotherShow = new Show(testMovie, smallTheater, LocalDateTime.now());
         showRepository.save(anotherShow);
         ShowSeat s2 = new ShowSeat(seat2, anotherShow, SeatAvailability.VACANT);
-        seatRepository.save(s1);
-        seatRepository.save(s2);
+        showSeatRepository.save(s1);
+        showSeatRepository.save(s2);
 
-        List<ShowSeat> bigShowSeats = seatRepository.findAllByShow(testShow);
+        List<ShowSeat> bigShowSeats = showSeatRepository.findAllByShow(testShow);
 
         assertEquals(1, bigShowSeats.size());
     }

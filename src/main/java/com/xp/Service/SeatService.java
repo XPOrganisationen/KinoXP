@@ -3,9 +3,8 @@ package com.xp.Service;
 import com.xp.Model.SeatAvailability;
 import com.xp.Model.Show;
 import com.xp.Model.ShowSeat;
-import com.xp.Repository.SeatRepository;
+import com.xp.Repository.ShowSeatRepository;
 import com.xp.Repository.ShowRepository;
-import com.xp.Repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +14,24 @@ import java.util.List;
 
 public class SeatService {
 
-    public final SeatRepository seatRepository;
-    private final TicketRepository ticketRepository;
+    public final ShowSeatRepository showSeatRepository;
     private final ShowRepository showRepository;
 
-    public SeatService(SeatRepository seatRepository, TicketRepository ticketRepository, ShowRepository showRepository) {
-        this.seatRepository = seatRepository;
-        this.ticketRepository = ticketRepository;
+    public SeatService(ShowSeatRepository showSeatRepository, ShowRepository showRepository) {
+        this.showSeatRepository = showSeatRepository;
         this.showRepository = showRepository;
     }
 
     public List <ShowSeat> findAllSeats() {
-        return seatRepository.findAll();
+        return showSeatRepository.findAll();
     }
 
     public ShowSeat findSeatById(Long seatId) {
-        return seatRepository.findById(seatId).orElseThrow(() -> new IllegalStateException("seat " + seatId + " not found"));
+        return showSeatRepository.findById(seatId).orElseThrow(() -> new IllegalStateException("seat " + seatId + " not found"));
     }
 
     public List<ShowSeat> getSeatsForShow(Show show) {
-        return seatRepository.findAllByShow(show);
+        return showSeatRepository.findAllByShow(show);
     }
 
     @Transactional
@@ -56,18 +53,18 @@ public class SeatService {
     }
 
     public ShowSeat updateSeat(ShowSeat showSeat) {
-        if (!seatRepository.existsById(showSeat.getShowSeatId())) {
+        if (!showSeatRepository.existsById(showSeat.getShowSeatId())) {
             throw new IllegalStateException("No seat exists with ID " + showSeat.getShowSeatId());
         }
 
-        return seatRepository.save(showSeat);
+        return showSeatRepository.save(showSeat);
     }
 
     public void deleteSeat(Long seatId) {
-        if (!seatRepository.existsById(seatId)) {
+        if (!showSeatRepository.existsById(seatId)) {
             throw new IllegalStateException("No seat exists with ID " + seatId);
         }
 
-        seatRepository.deleteById(seatId);
+        showSeatRepository.deleteById(seatId);
     }
 }

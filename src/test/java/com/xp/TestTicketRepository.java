@@ -26,7 +26,7 @@ public class TestTicketRepository {
     private TicketRepository ticketRepository;
 
     @Autowired
-    private SeatRepository seatRepository;
+    private ShowSeatRepository showSeatRepository;
 
     @Autowired
     private ShowRepository showRepository;
@@ -40,10 +40,6 @@ public class TestTicketRepository {
     @Autowired
     private MovieRepository movieRepository;
 
-    private Cinema cinema;
-    private Theater theater;
-    private Movie movie;
-    private Show show;
     private ShowSeat showSeat;
 
 
@@ -51,19 +47,19 @@ public class TestTicketRepository {
     @Transactional
     @Rollback
     void setUp() {
-        cinema = new Cinema("test Cinema", "http.denmark");
+        Cinema cinema = new Cinema("test Cinema", "http.denmark");
         cinemaRepository.save(cinema);
 
 
-        theater = new Theater(cinema, "test theater 1", 12, 20);
+        Theater theater = new Theater(cinema, "test theater 1", 12, 20);
         theaterRepository.save(theater);
 
-       movie = new Movie();
+        Movie movie = new Movie();
        movie.setMovieTitle("tron");
        movie.setMovieDuration(134.00);
        movieRepository.save(movie);
 
-        show = new Show();
+        Show show = new Show();
         show.setMovie(movie);
         show.setTheater(theater);
         show.setStartTime(LocalDateTime.now().plusDays(1));
@@ -74,7 +70,7 @@ public class TestTicketRepository {
 
 
         showSeat = new ShowSeat(seat, show, SeatAvailability.VACANT);
-        seatRepository.save(showSeat);
+        showSeatRepository.save(showSeat);
     }
 
     @Test

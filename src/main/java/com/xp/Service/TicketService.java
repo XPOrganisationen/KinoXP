@@ -1,9 +1,6 @@
 package com.xp.Service;
 
 import com.xp.Model.*;
-import com.xp.Repository.ReservationRepository;
-import com.xp.Repository.SeatRepository;
-import com.xp.Repository.ShowRepository;
 import com.xp.Repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,7 @@ public class TicketService {
 
     public final TicketRepository ticketRepository;
 
-    public TicketService(TicketRepository ticketRepository, SeatRepository seatRepository, ShowRepository showRepository, ReservationRepository reservationRepository) {
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 
