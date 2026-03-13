@@ -24,16 +24,16 @@ export function MovieForm(element, store) {
         const duration = formData.get("duration")
         const category = formData.get("category");
         const ageLimit = formData.get("ageLimit");
-        const is3d = formData.get("is3d");
+        const is3d = formData.get("is_3d").checked;
 
         const movie = {
-            title,
-            movieId: Number(movieId),
-            description,
-            duration,
-            category,
+            movieTitle: title,
+            movieId: id,
+            movieDescription: description,
+            movieDuration: duration,
+            movieCategory: category,
             ageLimit,
-            is3d
+            is_3d: is3d
         };
 
         if (id) {
@@ -68,7 +68,7 @@ export function MovieForm(element, store) {
         element.querySelector("input[name='duration']").value = movie.movieDuration;
         element.querySelector("input[name='category']").value = movie.movieCategory;
         element.querySelector("input[name='ageLimit']").value = movie.ageLimit;
-        element.querySelector("input[name='is3d']").value = movie.is_3d;
+        element.querySelector("input[name='is_3d']").value = movie.is_3d;
         element.querySelector("input[name='id']").value = movie.movieId;
 
         document.querySelector("#cancelEditBtn").classList.remove("hidden");

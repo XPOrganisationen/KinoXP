@@ -61,15 +61,18 @@
 
 <form id="movieForm">
     <input type="hidden" id="id" name="id">
-    <input type="number" id="movieId" name="movieId" placeholder="indtast id for film" required>
+    <input type="text" id="movieId" name="movieId" placeholder="Indtast id på film">
     <input type="text" id="title" name="title" placeholder="Indtast titel på film" required>
     <input type="text" id="description" name="description" placeholder="Indtast beskrivelse for film" required>
     <input type="number" id="duration" name="duration" placeholder="Indtast varighed for film i minutter" required>
     <input type="text" id="category" name="category" placeholder="Indtast kategori for film" required>
     <input type="number" id="ageLimit" name="ageLimit" placeholder="Indtast aldersbegrænsning for film" required>
-    <input type="checkbox" id="is3d" name="is3d" placeholder="3D">
+    <div class="form-check">
+        <input type="checkbox" id="is_3d" name="is_3d" class="form-check-input">
+        <label class="form-check-label" for="is_3d">3D</label>
+    </div>
     <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">Cancel Edit</button>
-    <button type="submit" class="btn btn-primary">Tilføj Ansat</button>
+    <button type="submit" class="btn btn-primary">Tilføj Film</button>
 </form>
 
 <table class="table">

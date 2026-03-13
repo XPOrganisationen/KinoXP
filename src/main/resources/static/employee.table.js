@@ -60,7 +60,7 @@ export function EmployeeTable(element, store, onEdit) {
         }
 
         if (event.target.getAttribute("data-action") === "edit") {
-            const employee = store.getEmployeeById(id);
+            const employee = await store.getEmployeeById(id);
             onEdit(employee);
             return;
         }

@@ -37,7 +37,12 @@ export function MovieTable(element, store, onEdit) {
                 <td>${movie.movieDuration}</td>
                 <td>${movie.movieCategory}</td>
                 <td>${movie.ageLimit}</td>
-                <td>${movie.is_3d}</td>
+                <td><input 
+                        type="checkbox" 
+                        ${movie.is_3d ? 'checked' : ''}
+                        data-action="toggle"
+                        class="completed-checkbox"
+                    ></td>
                 <td>
                     <div class="gap-2 flex">
                         <button data-action="edit" class="btn btn-warning">Edit</button>
@@ -62,7 +67,7 @@ export function MovieTable(element, store, onEdit) {
         }
 
         if (event.target.getAttribute("data-action") === "edit") {
-            const movie = store.getMovieById(id);
+            const movie = await store.getMovieById(id);
             onEdit(movie);
             return;
         }
@@ -75,9 +80,10 @@ export function MovieTable(element, store, onEdit) {
             const row = event.target.closest("tr");
             if (!row || !row.dataset.id) return;
             const id = parseInt(row.dataset.id);
+            const completed = event.target.checked;
 
             const movie = store.getMovieById(id);
-            await store.changeMovie(id, { ...movie});
+            await store.changeMovie(id, { ...movie, completed });
         }
     };
 

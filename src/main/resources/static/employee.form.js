@@ -20,13 +20,13 @@ export function EmployeeForm(element, store) {
         const name = formData.get("name");
         const employeeId = formData.get("employeeId");
         const role = formData.get("role")
-        const id = formData.get("employeeId");
         const username = formData.get("username")
         const password = formData.get("password");
+        const id = formData.get("employeeId");
 
         const employee = {
             name,
-            employeeId: Number(employeeId),
+            id,
             role,
             username,
             password
