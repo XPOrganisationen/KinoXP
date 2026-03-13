@@ -42,6 +42,7 @@ async function buildOrderObject(reservation) {
         return;
     }
 
+    let movieTitle = reservation.show.movie.movieTitle;
     let cinema = reservation.show.theater.cinema;
     let theater = reservation.show.theater;
     let showTime = reservation.show.startTime;
@@ -57,7 +58,8 @@ async function buildOrderObject(reservation) {
     })
     let totalPrice = reservation.totalPrice;
 
-    return {cinemaName: cinema.cinemaName,
+    return {movieTitle,
+        cinemaName: cinema.cinemaName,
         theaterName: theater.theaterName,
         showTime,
         seats,
