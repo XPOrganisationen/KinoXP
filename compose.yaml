@@ -14,6 +14,8 @@ services:
         condition: service_healthy
     networks:
       - spring-mysql
+    env_file:
+      - ./.env
 
   db:
     container_name: XPDB
