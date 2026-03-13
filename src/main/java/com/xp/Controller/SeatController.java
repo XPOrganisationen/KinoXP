@@ -66,14 +66,5 @@ public class SeatController {
     public ResponseEntity<Void> deleteSeat(Long seatId) {
         seatService.deleteSeat(seatId);
         return ResponseEntity.noContent().build();
-    @PostMapping("/show/{showId}/seat/{seatId}/override")
-    public String overrideSeatForShow(@PathVariable Long showId,
-                                      @PathVariable Long seatId,
-                                      @RequestParam SeatAvailability newAvailability) {
-
-        //check for admin here (if we get to it)
-
-        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
-        return "Seat-type changed for this show";
     }
 }
