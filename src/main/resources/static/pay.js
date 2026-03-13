@@ -40,13 +40,17 @@ function getPendingOrder()
 
 function renderOrder(order)
 {
-    document.getElementById("payment-movie-title").textContent = order.movieTitle || "Movie title missing";
+    let movieTitle = order.show.movie.movieTitle;
+    let cinemaName = order.show.theater.cinema.cinemaName;
+    let theaterName = order.show.theater.theaterName;
+    let showTime = order.show.startTime;
+    document.getElementById("payment-movie-title").textContent = movieTitle || "Movie title missing";
 
     const showInfo =
         [
-            order.cinemaName,
-            order.theaterName,
-            formatDateTime(order.showTime)
+            cinemaName,
+            theaterName,
+            formatDateTime(showTime)
         ].filter(Boolean).join(" - ");
 
     document.getElementById("payment-show-info").textContent= showInfo || "Missing time of the movie";
@@ -54,15 +58,16 @@ function renderOrder(order)
     const summaryContent = document.getElementById("summary-content");
     summaryContent.innerHTML="";
 
-    if (Array.isArray(order.seats) && order.seats.length > 0)
+    if (Array.isArray(order.movieTickets) && order.movieTickets.length > 0)
     {
         const seatList = document.createElement("ul");
         seatList.classList.add("payment-seat-list");
 
-        order.seats.forEach(seat =>
+        order.movieTickets.forEach(ticket =>
         {
+            let seat = ticket.showSeat.seat;
             const li = document.createElement("li");
-            li.textContent = `Row ${seat.row}, Seat ${seat.number} - ${seat.ticketType || "Ticket"} - ${formatPrice(seat.price)}`;
+            li.textContent = `Row ${seat.rowNumber}, Seat ${seat.seatNumber} - ${ticket.ticketType || "Ticket"} - ${formatPrice(ticket.price)}`;
             seatList.appendChild(li);
         });
 
@@ -73,20 +78,22 @@ function renderOrder(order)
         summaryContent.innerHTML = "<p>No seats selected.</p>";
     }
 
-    if (order.reservationFee && order.reservationFee > 0)
+    if (order.reservationFee && order.reservationFee !== 0)
     {
         const fee = document.createElement("p");
-        fee.textContent = `Reservation fee: ${formatPrice(order.reservationFee)}`;
+        let textStart = order.reservationFee > 0 ? 'Reservation fee:' : 'Discount:';
+        fee.textContent = `${textStart} ${formatPrice(Math.abs(order.reservationFee))}`;
         summaryContent.appendChild(fee);
     }
     document.getElementById("payment-total").textContent = formatPrice(order.totalPrice || 0);
 }
 
-function handlePaymentSubmit(event)
+async function handlePaymentSubmit(event)
 {
     event.preventDefault();
+    let order = getPendingOrder();
+    await reserveOrder({show: order.show, movieTickets: order.movieTickets});
 
-    const order = getPendingOrder();
     if(!order)
     {
         alert("Order does not exist");
@@ -115,8 +122,19 @@ function handlePaymentSubmit(event)
         };
     sessionStorage.setItem("completedOrder", JSON.stringify(completedOrder));
     sessionStorage.removeItem("pendingOrder");
-
     window.location.href="receipt.html";
+}
+
+async function reserveOrder(order) {
+    let options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(order)
+    };
+
+    await fetchDataFrom(`http://localhost:8080/api/reservations`, options);
 }
 
 function handleCancelPayment()
@@ -153,4 +171,16 @@ function formatDateTime(value)
             dateStyle: "short",
             timeStyle: "short"
         });
+}
+
+async function fetchDataFrom(URL, options) {
+    let response;
+
+    try {
+        response = await fetch(URL, options);
+    } catch (error) {
+        console.error('Got error: ', error);
+    }
+
+    return await response.json();
 }

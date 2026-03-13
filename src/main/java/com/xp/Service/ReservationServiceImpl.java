@@ -1,10 +1,8 @@
 package com.xp.Service;
 
 import com.xp.Exceptions.EntityDoesNotExistException;
-import com.xp.Model.Movie;
 import com.xp.Model.MovieTicket;
 import com.xp.Model.Reservation;
-import com.xp.Model.Show;
 import com.xp.Repository.ReservationRepository;
 import com.xp.Repository.ShowRepository;
 import org.springframework.stereotype.Service;
@@ -55,7 +53,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 
-    private double calculateTotalPrice(Reservation reservation) {
+    @Override
+    public Double calculateTotalPrice(Reservation reservation) {
         List<MovieTicket> movieTickets = reservation.getMovieTickets();
         if (movieTickets.isEmpty()) {
             return 0.0;

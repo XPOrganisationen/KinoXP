@@ -1,6 +1,7 @@
 package com.xp.Service;
 
 import com.xp.Model.Reservation;
+
 import java.util.List;
 
 public interface ReservationService {
@@ -9,4 +10,5 @@ public interface ReservationService {
     public Reservation addReservation(Reservation reservation);
     public Reservation updateReservation(Reservation reservation);
     public void deleteReservation(Long reservationId);
+    public Double calculateTotalPrice(Reservation reservation);
 }

@@ -3,7 +3,6 @@ package com.xp.Controller;
 import com.xp.Model.DTOs.EmployeeCredentials;
 import com.xp.Service.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 //Jeg ved ikke hvordan man skal tilgå en html side via en form, hvis man ikke bruger thymeleaf.
 @RestController

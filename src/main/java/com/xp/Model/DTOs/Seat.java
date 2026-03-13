@@ -1,6 +1,5 @@
 package com.xp.Model.DTOs;
 
-import com.xp.Model.SeatAvailability;
 import com.xp.Model.SeatType;
 import com.xp.Model.Theater;
 import jakarta.persistence.*;

@@ -2,7 +2,6 @@ package com.xp.Repository;
 
 import com.xp.Model.MovieTicket;
 import com.xp.Model.ShowSeat;
-import com.xp.Model.Show;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

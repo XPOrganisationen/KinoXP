@@ -3,7 +3,6 @@ package com.xp.Service;
 import com.xp.Exceptions.DataAccessException;
 import com.xp.Exceptions.EntityDoesNotExistException;
 import com.xp.Model.Employee;
-import com.xp.Model.Movie;
 import com.xp.Repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 

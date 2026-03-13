@@ -1,8 +1,8 @@
 package com.xp.Repository;
 
+import com.xp.Model.SeatAvailability;
 import com.xp.Model.Show;
 import com.xp.Model.ShowSeat;
-import com.xp.Model.SeatAvailability;
 import com.xp.Model.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -3,7 +3,6 @@ package com.xp.Model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.List;
 
 @Entity
 @Table(name = "Cinemas")

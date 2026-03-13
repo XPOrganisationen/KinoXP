@@ -2,15 +2,14 @@ package com.xp.Controller;
 
 
 import com.xp.Model.SeatAvailability;
-import com.xp.Model.SeatType;
-import com.xp.Model.SeatAvailability;
-import com.xp.Model.ShowSeat;
 import com.xp.Model.Show;
+import com.xp.Model.ShowSeat;
 import com.xp.Service.SeatService;
 import com.xp.Service.ShowService;
-import com.xp.Service.TicketService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -52,14 +51,16 @@ public class SeatController {
         return showSeat.getSeat().getSeatType().getPriceAdjustment();
     }
 
-    @PostMapping("/show/{showId}/seat/{seatId}/override")
-    public String overrideSeatForShow(@PathVariable Long showId,
-                                      @PathVariable Long seatId,
-                                      @RequestParam SeatAvailability newAvailability) {
+    @PutMapping
+    public ResponseEntity<ShowSeat> updateSeat(@RequestBody ShowSeat showSeat) {
+        return ResponseEntity
+                .created(URI.create("/api/seats/" + showSeat.getShowSeatId()))
+                .body(seatService.updateSeat(showSeat));
+    }
 
-        //check for admin here (if we get to it)
-
-        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
-        return "Seat-type changed for this show";
+    @DeleteMapping
+    public ResponseEntity<Void> deleteSeat(Long seatId) {
+        seatService.deleteSeat(seatId);
+        return ResponseEntity.noContent().build();
     }
 }

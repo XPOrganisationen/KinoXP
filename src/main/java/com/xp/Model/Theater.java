@@ -1,10 +1,6 @@
 package com.xp.Model;
 
-import com.xp.Model.Cinema;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import java.util.Objects;
 
 import java.util.Objects;
 
