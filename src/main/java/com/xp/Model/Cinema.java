@@ -12,9 +12,6 @@ public class Cinema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cinemaId;
 
-    @OneToMany(mappedBy = "cinema")
-    private List<Theater> theaters;
-
     private String cinemaName; // Remember that this becomes snake_case in the DB by default
     private String cinemaAddress;
 
@@ -32,7 +29,11 @@ public class Cinema {
     }
 
     public Long getCinemaId() {
-        return  cinemaId;
+        return cinemaId;
+    }
+
+    public void setCinemaId(Long cinemaId) {
+        this.cinemaId = cinemaId;
     }
 
     public String getCinemaAddress() {

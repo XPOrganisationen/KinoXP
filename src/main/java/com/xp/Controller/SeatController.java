@@ -2,9 +2,11 @@ package com.xp.Controller;
 
 
 import com.xp.Model.SeatAvailability;
+import com.xp.Model.SeatType;
 import com.xp.Model.ShowSeat;
 import com.xp.Model.Show;
 import com.xp.Service.SeatService;
+import com.xp.Service.ShowService;
 import com.xp.Service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +17,11 @@ import java.util.List;
 public class SeatController {
 
     private final SeatService seatService;
-    private final TicketService ticketService;
+    private final ShowService showService;
 
-    public SeatController(SeatService seatService, TicketService ticketService) {
+    public SeatController(SeatService seatService, ShowService showService) {
         this.seatService = seatService;
-        this.ticketService = ticketService;
+        this.showService = showService;
     }
 
     @GetMapping
@@ -34,18 +36,18 @@ public class SeatController {
 
     @GetMapping("/show/{showId}")
     public List<ShowSeat> getSeatsForShow(@PathVariable Long showId) {
-        Show show = ticketService.findShowById(showId);
+        Show show = showService.findById(showId);
         return seatService.getSeatsForShow(show);
     }
 
-    @PostMapping("/show/{showId}/seat/{seatId}/override")
-    public String overrideSeatForShow(@PathVariable Long showId,
-                                      @PathVariable Long seatId,
-                                      @RequestParam SeatAvailability newAvailability) {
+    @GetMapping("get-all-seat-availability-options")
+    public List<SeatAvailability> getAllSeatAvailabilityOptions() {
+        return List.of(SeatAvailability.values());
+    }
 
-        //check for admin here (if we get to it)
-
-        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
-        return "Seat-type changed for this show";
+    @GetMapping("{seatId}/get-price")
+    public Double getPrice(@PathVariable Long seatId) {
+        ShowSeat showSeat = getSeatById(seatId);
+        return showSeat.getSeat().getSeatType().getPriceAdjustment();
     }
 }

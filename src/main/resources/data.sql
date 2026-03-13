@@ -1,3 +1,5 @@
+USE xpdb;
+
 INSERT INTO movies (movie_title, movie_description, movie_duration_minutes, movie_category, age_limit, is_3d) VALUES
 ('Space Adventure', 'Sci-fi epic', 130, 'Sci-Fi', 12, TRUE),
 ('Romantic Comedy', 'Light romance', 95, 'RomCom', 10, FALSE),
@@ -21,8 +23,8 @@ INSERT INTO theaters (theater_name, number_of_rows, seats_per_row, cinema_id) VA
 ('Screen 2', 3, 4, 1),
 ('Screen 1', 4, 5, 2);
 
--- Theater 1 showSeats (theater_id = 1)
-INSERT IGNORE INTO showSeats (theater_id, ro_number, seat_number, seat_type)
+-- Theater 1 seats (theater_id = 1)
+INSERT IGNORE INTO seats (theater_id, ro_number, seat_number, seat_type)
 SELECT 1, r.rn, s.sn,
 CASE
 WHEN r.rn = 1 THEN 'SOFA_seats'
@@ -32,15 +34,15 @@ END
 FROM (SELECT 1 AS rn UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) r
 CROSS JOIN (SELECT 1 AS sn UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) s;
 
--- Theater 2 showSeats (theater_id = 2)
-INSERT IGNORE INTO showSeats (theater_id, ro_number, seat_number, seat_type)
+-- Theater 2 seats (theater_id = 2)
+INSERT IGNORE INTO seats (theater_id, ro_number, seat_number, seat_type)
 SELECT 2, r.rn, s.sn,
 CASE WHEN r.rn = 1 THEN 'SOFA_seats' ELSE 'NORMAL' END
 FROM (SELECT 1 AS rn UNION ALL SELECT 2 UNION ALL SELECT 3) r
 CROSS JOIN (SELECT 1 AS sn UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) s;
 
--- Theater 3 showSeats (theater_id = 3)
-INSERT IGNORE INTO showSeats (theater_id, ro_number, seat_number, seat_type)
+-- Theater 3 seats (theater_id = 3)
+INSERT IGNORE INTO seats (theater_id, ro_number, seat_number, seat_type)
 SELECT 3, r.rn, s.sn, 'NORMAL'
 FROM (SELECT 1 AS rn UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) r
 CROSS JOIN (SELECT 1 AS sn UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) s;
@@ -55,11 +57,11 @@ INSERT INTO shows (movie_id, theater_id, start_time) VALUES
 (5, 3, DATE_ADD(NOW(), INTERVAL 15 MINUTE)),
 (2, 3, DATE_ADD(NOW(), INTERVAL 2 DAY));
 
--- Populate show_seats for each show (set availability = 'AVAILABLE')
+-- Populate show_seats for each show (set availability = 'VACANT')
 INSERT INTO show_seats (show_id, seat_id, seat_availability)
 SELECT s.show_id, st.seat_id, 'VACANT'
 FROM shows s
-JOIN showSeats st ON st.theater_id = s.theater_id;
+JOIN seats st ON st.theater_id = s.theater_id;
 
 -- Capture show_ids for later use
 SET @show_space_1 = (SELECT show_id FROM shows WHERE movie_id=1 AND theater_id=1 ORDER BY start_time LIMIT 1);
@@ -70,22 +72,22 @@ SET @show_doc = (SELECT show_id FROM shows WHERE movie_id=4 LIMIT 1);
 SET @show_anim = (SELECT show_id FROM shows WHERE movie_id=5 LIMIT 1);
 SET @show_romcom_future = (SELECT show_id FROM shows WHERE movie_id=2 AND theater_id=3 LIMIT 1);
 
--- Pick show_seat_ids (ordered by row/showSeat) for showSeats we intend to reserve
-SET @t1_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1);
-SET @t1_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
-SET @t1_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
-SET @t1_showseat_4 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 3);
-SET @t1_showseat_5 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_2 ORDER BY s.ro_number, s.seat_number LIMIT 1);
-SET @t1_showseat_6 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_2 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
+-- Pick show_seat_ids (ordered by row/seat) for seats we intend to reserve
+SET @t1_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1);
+SET @t1_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
+SET @t1_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
+SET @t1_showseat_4 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_1 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 3);
+SET @t1_showseat_5 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_2 ORDER BY s.ro_number, s.seat_number LIMIT 1);
+SET @t1_showseat_6 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_space_2 ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
 
-SET @t2_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1);
-SET @t2_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
-SET @t2_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
+SET @t2_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1);
+SET @t2_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
+SET @t2_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_horror ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
 
-SET @t3_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_romcom_future ORDER BY s.ro_number, s.seat_number LIMIT 1);
-SET @t3_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1);
-SET @t3_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
-SET @t3_showseat_4 = (SELECT ss.show_seat_id FROM show_seats ss JOIN showSeats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
+SET @t3_showseat_1 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_romcom_future ORDER BY s.ro_number, s.seat_number LIMIT 1);
+SET @t3_showseat_2 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1);
+SET @t3_showseat_3 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 1);
+SET @t3_showseat_4 = (SELECT ss.show_seat_id FROM show_seats ss JOIN seats s ON ss.seat_id = s.seat_id WHERE ss.show_id = @show_anim ORDER BY s.ro_number, s.seat_number LIMIT 1 OFFSET 2);
 
 -- Create reservations (must reference existing show_ids)
 INSERT INTO reservations (show_id, customer_name, customer_email, reservation_time, total_price) VALUES
@@ -117,7 +119,7 @@ INSERT INTO movie_tickets (price, show_id, show_seat_id, reservation_id) VALUES
 (12.50, @show_horror, @t2_showseat_2, @res_horror_2),
 (12.50, @show_horror, (SELECT ss.show_seat_id FROM show_seats ss WHERE ss.show_id=@show_horror ORDER BY ss.show_seat_id LIMIT 1 OFFSET 2), @res_horror_3),
 
--- Space Adventure tickets (two reservations, multiple showSeats)
+-- Space Adventure tickets (two reservations, multiple seats)
 (15.00, @show_space_1, @t1_showseat_1, @res_space1_1),
 (15.00, @show_space_1, @t1_showseat_2, @res_space1_2),
 (15.00, @show_space_1, @t1_showseat_3, @res_space1_1),

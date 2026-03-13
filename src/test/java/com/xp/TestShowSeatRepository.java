@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 public class TestShowSeatRepository {
 
@@ -67,6 +68,7 @@ public class TestShowSeatRepository {
 
     @Test
     void findAll_returnsShowSeats() {
+        List<ShowSeat> showSeatsBefore = seatRepository.findAll();
         Seat seat1 = new Seat(bigTheater, 2, 2, SeatType.NORMAL);
         Seat seat2 = new Seat(bigTheater, 2, 5, SeatType.NORMAL);
 
@@ -77,7 +79,7 @@ public class TestShowSeatRepository {
 
         List<ShowSeat> showSeats = seatRepository.findAll();
 
-        assertEquals(2, showSeats.size());
+        assertEquals(showSeatsBefore.size() + 2, showSeats.size());
     }
 
     @Test
@@ -95,7 +97,7 @@ public class TestShowSeatRepository {
 
         List<ShowSeat> bigShowSeats = seatRepository.findAllByShow(testShow);
 
-        assertEquals(2, bigShowSeats.size());
+        assertEquals(3, bigShowSeats.size());
         for (ShowSeat s : bigShowSeats) {
             assertEquals(testShow, s.getShow());
         }

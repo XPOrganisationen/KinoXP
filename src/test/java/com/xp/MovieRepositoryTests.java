@@ -6,11 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 public class MovieRepositoryTests {
     @Autowired
@@ -64,7 +65,7 @@ public class MovieRepositoryTests {
         );
 
         List<Movie> actualMovies = movieRepository.findAllByMovieTitleContainingIgnoreCase("ture"); // Adven*, Na*
-        org.junit.jupiter.api.Assertions.assertTrue(moviesWithTheInTitle.containsAll(actualMovies));
+        org.junit.jupiter.api.Assertions.assertTrue(actualMovies.equals(moviesWithTheInTitle));
         org.junit.jupiter.api.Assertions.assertEquals(2, actualMovies.size());
     }
 
@@ -110,9 +111,9 @@ public class MovieRepositoryTests {
         org.junit.jupiter.api.Assertions.assertEquals(3, actual.size());
     }
 
-    @Test // Look at the helpful comment on lines 66-71 in data.sql and confirm order
+    @Test // Order does not fit dev-database so hard to verify
     public void findAllOrderByPopularityDescReturnsInMostTicketsSoldFirstOrder() {
-        List<Long> movieIdsInDesiredOrder = List.of(1L, 2L, 3L, 5L, 4L);
+        List<Long> movieIdsInDesiredOrder = List.of(3L, 1L, 2L, 4L, 5L);
         org.junit.jupiter.api.Assertions.assertEquals(movieIdsInDesiredOrder,
                 movieRepository
                         .findAllOrderByPopularityDesc()

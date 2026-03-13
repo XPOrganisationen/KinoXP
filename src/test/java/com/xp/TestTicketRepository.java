@@ -4,11 +4,11 @@ import com.xp.Model.*;
 import com.xp.Model.DTOs.Seat;
 import com.xp.Repository.*;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 @Transactional
 public class TestTicketRepository {
@@ -40,18 +40,16 @@ public class TestTicketRepository {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Autowired
-    private ReservationRepository reservationRepository;
-
     private Cinema cinema;
     private Theater theater;
     private Movie movie;
     private Show show;
     private ShowSeat showSeat;
-    private Reservation reservation;
 
 
     @BeforeEach
+    @Transactional
+    @Rollback
     void setUp() {
         cinema = new Cinema("test Cinema", "http.denmark");
         cinemaRepository.save(cinema);
@@ -77,10 +75,6 @@ public class TestTicketRepository {
 
         showSeat = new ShowSeat(seat, show, SeatAvailability.VACANT);
         seatRepository.save(showSeat);
-
-        reservation = new Reservation();
-        reservation.setShow(show);
-        reservationRepository.save(reservation);
     }
 
     @Test
@@ -88,28 +82,21 @@ public class TestTicketRepository {
         MovieTicket ticket = new MovieTicket();
         ticket.setPrice(170.00);
         ticket.setSeat(showSeat);
-        ticket.setShow(show);
-        ticket.setReservation(reservation);
 
         MovieTicket saved = ticketRepository.save(ticket);
 
         assertNotNull(saved.getMovieTicketId());
         assertEquals(showSeat.getShowSeatId(), saved.getSeat().getShowSeatId());
-        assertEquals(show.getShowId(), saved.getShow().getShowId());
         assertEquals(170.00, saved.getPrice());
     }
 
     @Test
     void findAll_returnsAlltickets() {
-
-        MovieTicket t1 = new MovieTicket(125.00, show, showSeat);
-        t1.setReservation(reservation);
-        MovieTicket t2 = new MovieTicket(150.00, show, showSeat);
-        t2.setReservation(reservation);
-        MovieTicket t3 = new MovieTicket(165.00, show, showSeat);
-        t3.setReservation(reservation);
-        MovieTicket t4 = new MovieTicket(180.00, show, showSeat);
-        t4.setReservation(reservation);
+        List<MovieTicket> ticketsBefore =  ticketRepository.findAll();
+        MovieTicket t1 = new MovieTicket(125.00, showSeat, TicketType.ADULT);
+        MovieTicket t2 = new MovieTicket(150.00, showSeat, TicketType.ADULT);
+        MovieTicket t3 = new MovieTicket(165.00, showSeat, TicketType.ADULT);
+        MovieTicket t4 = new MovieTicket(180.00, showSeat, TicketType.ADULT);
 
         ticketRepository.save(t1);
         ticketRepository.save(t2);
@@ -118,14 +105,12 @@ public class TestTicketRepository {
 
         List<MovieTicket> tickets = ticketRepository.findAll();
 
-        assertEquals(4, tickets.size());
+        assertEquals(ticketsBefore.size() + 4, tickets.size());
     }
     @Test
     void findById_returnsCorrectTicket() {
         MovieTicket ticket = new MovieTicket();
         ticket.setSeat(showSeat);
-        ticket.setShow(show);
-        ticket.setReservation(reservation);
 
         MovieTicket saved = ticketRepository.save(ticket);
 
@@ -136,15 +121,13 @@ public class TestTicketRepository {
 
     @Test
     void deleteTicket_removesTicket() {
-
+        List<MovieTicket> ticketsBefore = ticketRepository.findAll();
         MovieTicket ticket = new MovieTicket();
-        ticket.setShow(show);
         ticket.setSeat(showSeat);
-        ticket.setReservation(reservation);
 
        MovieTicket saved = ticketRepository.save(ticket);
+       assertEquals(ticketsBefore.size() + 1, ticketRepository.findAll().size());
        ticketRepository.delete(saved);
-
-       assertEquals(1, ticketRepository.findAll().size());
+       assertEquals(ticketsBefore.size(), ticketRepository.findAll().size());
     }
 }

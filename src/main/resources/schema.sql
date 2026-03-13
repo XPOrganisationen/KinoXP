@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS movie_tickets;
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS seats;
 DROP TABLE IF EXISTS shows;
+DROP TABLE IF EXISTS show_seats;
 DROP TABLE IF EXISTS theaters;
 DROP TABLE IF EXISTS cinemas;
 DROP TABLE IF EXISTS movies;
@@ -58,7 +59,7 @@ CREATE TABLE seats (
     ro_number INT,
     seat_number INT,
     seat_type ENUM('COWBOY_seats', 'NORMAL', 'SOFA_seats'),
-    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id),
+    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id) ON DELETE CASCADE,
     CONSTRAINT NO_DUPLICATE_seats_IN_ONE_THEATER UNIQUE (theater_id, ro_number, seat_number)
 );
 
@@ -67,8 +68,8 @@ CREATE TABLE show_seats(
 	seat_id BIGINT,
     show_id BIGINT,
 	seat_availability ENUM('VACANT', 'RESERVED', 'HANDICAP'),
-    FOREIGN KEY (seat_id) REFERENCES seats(seat_id),
-    FOREIGN KEY (show_id) REFERENCES shows(show_id),
+    FOREIGN KEY (seat_id) REFERENCES seats(seat_id) ON DELETE CASCADE,
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
     CONSTRAINT no_duplicate_show_seats UNIQUE (show_seat_id, seat_id, show_id)
 );
 
@@ -79,7 +80,7 @@ CREATE TABLE reservations (
     customer_email TEXT,
     reservation_time DATETIME,
     total_price double,
-    FOREIGN KEY (show_id) REFERENCES shows(show_id)
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE
 );
 
 CREATE TABLE movie_tickets (
@@ -88,8 +89,8 @@ CREATE TABLE movie_tickets (
     show_id BIGINT,
     show_seat_id BIGINT,
     reservation_id BIGINT,
-    FOREIGN KEY (show_id) REFERENCES shows(show_id),
-    FOREIGN KEY (show_seat_id) REFERENCES show_seats(show_seat_id),
-    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id)
+    ticket_type ENUM('CHILD', 'ADULT', 'SENIOR'),
+    FOREIGN KEY (show_seat_id) REFERENCES show_seats(show_seat_id) ON DELETE CASCADE,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE
 );
 

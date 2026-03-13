@@ -20,7 +20,6 @@ public class Theater {
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
-    @JsonBackReference
     private Cinema cinema;
 
     public Theater() {}
@@ -42,6 +41,10 @@ public class Theater {
 
     public Long getTheaterId() {
         return this.theaterId;
+    }
+
+    public void setTheaterId(Long theaterId) {
+        this.theaterId = theaterId;
     }
 
     public Cinema getCinema() {
