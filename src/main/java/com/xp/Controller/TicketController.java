@@ -53,4 +53,9 @@ public class TicketController {
     public List<TicketType> getAllTicketTypes() {
         return List.of(TicketType.values());
     }
+
+    @PostMapping
+    public Double getTicketPrice(@RequestBody MovieTicket movieTicket) {
+        return ticketService.getTicketPrice(movieTicket.getSeat(), movieTicket.getTicketType());
+    }
 }

@@ -55,7 +55,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 
-    private double calculateTotalPrice(Reservation reservation) {
+    @Override
+    public Double calculateTotalPrice(Reservation reservation) {
         List<MovieTicket> movieTickets = reservation.getMovieTickets();
         if (movieTickets.isEmpty()) {
             return 0.0;

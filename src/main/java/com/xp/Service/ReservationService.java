@@ -9,4 +9,5 @@ public interface ReservationService {
     public Reservation addReservation(Reservation reservation);
     public Reservation updateReservation(Reservation reservation);
     public void deleteReservation(Long reservationId);
+    public Double calculateTotalPrice(Reservation reservation);
 }

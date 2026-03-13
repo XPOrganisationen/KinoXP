@@ -43,7 +43,7 @@ public class SeatService {
         Show show = showRepository.findById(showId).get();
         ShowSeat showSeat = findSeatById(seatId);
 
-        if (newAvailability == SeatAvailability.RESERVED) {
+        if (showSeat.getSeatAvailability() == SeatAvailability.RESERVED) {
             throw new IllegalArgumentException("Cannot change seat type if type = reserved");
         }
 
@@ -54,5 +54,21 @@ public class SeatService {
                 s.setSeatAvailability(newAvailability);
             }
         }
+    }
+
+    public ShowSeat updateSeat(ShowSeat showSeat) {
+        if (!seatRepository.existsById(showSeat.getShowSeatId())) {
+            throw new IllegalStateException("No seat exists with ID " + showSeat.getShowSeatId());
+        }
+
+        return seatRepository.save(showSeat);
+    }
+
+    public void deleteSeat(Long seatId) {
+        if (!seatRepository.existsById(seatId)) {
+            throw new IllegalStateException("No seat exists with ID " + seatId);
+        }
+
+        seatRepository.deleteById(seatId);
     }
 }

@@ -28,6 +28,15 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie ticket not found"));
     }
 
+    public Double getTicketPrice(ShowSeat showSeat, TicketType ticketType) {
+        double seatPrice = showSeat.getSeat().getSeatType().getPriceAdjustment();
+        double ticketPrice = ticketType.getPrice();
+        Movie movie = showSeat.getShow().getMovie();
+        double longMovieFee = movie.getMovieDuration() >= 170 ? 15 : 0;
+        double is3dFee = movie.is_3d() ? 10 : 0;
+        return seatPrice + ticketPrice + longMovieFee + is3dFee;
+    }
+
     @Transactional
     public MovieTicket createTicket(ShowSeat showSeat, TicketType ticketType) {
 
@@ -37,17 +46,8 @@ public class TicketService {
             throw new IllegalStateException("Seat already taken for this viewing");
         }
 
-        double seatPrice = showSeat.getSeat().getSeatType().getPriceAdjustment();
-        double ticketPrice = ticketType.getPrice();
-        Movie movie = showSeat.getShow().getMovie();
-        double longMovieFee = movie.getMovieDuration() >= 170 ? 15 : 0;
-        double is3dFee = movie.is_3d() ? 10 : 0;
-        double price = seatPrice + ticketPrice + longMovieFee + is3dFee;
-
-        MovieTicket ticket = new MovieTicket();
-        ticket.setSeat(showSeat);
-        ticket.setPrice(price);
-        ticket.setTicketType(ticketType);
+        MovieTicket ticket = new MovieTicket(showSeat, ticketType);
+        ticket.setPrice(getTicketPrice(showSeat, ticketType));
         return ticketRepository.save(ticket);
     }
 }

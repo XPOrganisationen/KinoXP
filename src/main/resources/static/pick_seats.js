@@ -22,7 +22,7 @@ async function initApp() {
     payButton.classList.add('pay-button');
     payButton.addEventListener('click', event => handlePayClicked(event, showId));
     payButton.textContent = 'Pay';
-    document.querySelector('#indicator-list').after(payButton);
+    document.querySelector('#seat-availability-indicator-grid').appendChild(payButton);
 }
 
 async function fetchDataFrom(URL, options) {
@@ -38,33 +38,7 @@ async function fetchDataFrom(URL, options) {
 }
 
 async function buildOrderObject(reservation) {
-    if (seatsPicked.length === 0) {
-        return;
-    }
-
-    let movieTitle = reservation.show.movie.movieTitle;
-    let cinema = reservation.show.theater.cinema;
-    let theater = reservation.show.theater;
-    let showTime = reservation.show.startTime;
-
-    let seats = reservation.movieTickets.map(ticket => {
-        let seat = ticket.showSeat.seat;
-        return {
-            row: seat.rowNumber,
-            number: seat.seatNumber,
-            ticketType: ticket.ticketType,
-            price: ticket.price
-        }
-    })
-    let totalPrice = reservation.totalPrice;
-
-    return {movieTitle,
-        cinemaName: cinema.cinemaName,
-        theaterName: theater.theaterName,
-        showTime,
-        seats,
-        reservationFee: calculateReservationFee(totalPrice, ticketTypes.length),
-        totalPrice};
+    return {...reservation, reservationFee: calculateReservationFee(reservation.totalPrice, reservation.movieTickets.length)};
 }
 
 function calculateReservationFee(totalPrice, numTickets) {
@@ -84,21 +58,34 @@ function calculateReservationFee(totalPrice, numTickets) {
 async function handlePayClicked(event, showId) {
     let show = await fetchDataFrom(`http://localhost:8080/api/shows/${showId}`);
     let movieTicketData = [];
-    for (let i = 0; i < seatsPicked.length; i++) {
-        movieTicketData.push({showSeat: seatsPicked[i], ticketType: ticketTypes[i]});
-    }
 
-    let reservation = {show, movieTickets: movieTicketData};
+    for (let i = 0; i < seatsPicked.length; i++) {
+        let options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+        };
+
+        options.body = JSON.stringify({showSeat: seatsPicked[i], ticketType: ticketTypes[i]});
+
+        movieTicketData.push({
+            showSeat: seatsPicked[i],
+            ticketType: ticketTypes[i],
+            price: await fetchDataFrom(`http://localhost:8080/api/tickets/`, options)
+        });
+    }
 
     let options = {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
         },
-        body: JSON.stringify(reservation)
     };
 
-    reservation = await fetchDataFrom(`http://localhost:8080/api/reservations`, options);
+    let reservation = {show, movieTickets: movieTicketData};
+    options.body = JSON.stringify(reservation);
+    reservation.totalPrice = await fetchDataFrom(`http://localhost:8080/api/reservations/total-price`, options);
     let orderObj = await buildOrderObject(reservation);
     let orderJson = JSON.stringify(orderObj);
     localStorage.setItem('pendingOrder', orderJson);
@@ -122,7 +109,7 @@ function getTicketType() {
 
         function onCloseClick() {
             let checked = document.querySelector('input[type=radio]:checked');
-            let chosenType = checked ? checked.parentNode.textContent : '';
+            let chosenType = checked ? checked.parentNode.textContent.toUpperCase() : '';
             done(chosenType);
         }
 
@@ -142,7 +129,7 @@ function buildTicketTypeModal(allTicketTypes) {
     allTicketTypes.forEach(ticketType => {
        let li = document.createElement("li");
        li.classList.add('ticket-type-item');
-       li.textContent = ticketType;
+       li.textContent = ticketTypeToPrettyString(ticketType);
        let radioButton = document.createElement("input");
        radioButton.type = 'radio';
        radioButton.name = 'ticket-type';
@@ -203,7 +190,7 @@ function buildSeatGrid(numRows, numSeats, showSeats) {
 
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numSeats; j++) {
-            let showSeat = showSeats[j * i + j];
+            let showSeat = showSeats[i * numSeats + j];
             let seatBox = document.createElement('div');
             seatBox.classList.add('seat-' + showSeat.seatAvailability.toLowerCase());
             seatBox.setAttribute('data-seat-id', showSeat.showSeatId);
@@ -222,12 +209,42 @@ function buildColorIndicatorGrid(availabilityOptionList) {
        let indicator = document.createElement('li');
        indicator.classList.add('indicator-' + ao.toLowerCase());
        indicatorList.appendChild(indicator);
-       indicator.textContent = ao.toLowerCase();
+       indicator.textContent = availabilityToPrettyString(ao.toLowerCase());
     });
 
     let indicator = document.createElement('li');
     indicator.classList.add('indicator-reserved-by-you');
     indicatorList.appendChild(indicator);
-    indicator.textContent = 'reserved by you'.toLowerCase();
+    indicator.textContent = 'Reserved by you';
     availabilityGrid.appendChild(indicatorList);
+}
+
+function availabilityToPrettyString(availability) {
+    switch (availability) {
+        case 'vacant':
+            return 'Vacant';
+        case 'reserved':
+            return 'Reserved';
+        case 'out_of_service':
+            return 'Out of Service';
+        case 'handicap':
+            return 'Handicap';
+        case 'reserved by you':
+            return 'Reserved by you';
+        default:
+            return 'ERROR';
+    }
+}
+
+function ticketTypeToPrettyString(ticketType) {
+    switch (ticketType) {
+        case 'ADULT':
+            return 'Adult';
+        case 'CHILD':
+            return 'Child';
+        case 'SENIOR':
+            return 'Senior';
+        default:
+            return 'ERROR';
+    }
 }
