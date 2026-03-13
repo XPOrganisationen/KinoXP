@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS seats;
 DROP TABLE IF EXISTS shows;
 DROP TABLE IF EXISTS show_seats;
+DROP TAble IF EXISTS employees;
 DROP TABLE IF EXISTS theaters;
 DROP TABLE IF EXISTS cinemas;
 DROP TABLE IF EXISTS movies;
@@ -33,6 +34,14 @@ CREATE TABLE IF NOT EXISTS theaters (
     seats_per_row INT,
     cinema_id BIGINT,
     FOREIGN KEY (cinema_id) REFERENCES cinemas(cinema_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS employees (
+    employee_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    employee_username TEXT,
+    employee_name TEXT,
+    employee_password TEXT,
+    employee_role TEXT
 );
 
 CREATE TABLE shows (

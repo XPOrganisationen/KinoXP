@@ -2,10 +2,11 @@ package com.xp.Controller;
 
 
 import com.xp.Model.*;
-import com.xp.Service.SeatService;
-import com.xp.Service.TicketService;
+import com.xp.Model.DTOs.TicketSales;
+import com.xp.Service.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,10 +15,14 @@ public class TicketController {
 
     private final TicketService ticketService;
     private final SeatService seatService;
+    private final MovieService movieService;
+    private final ShowService showService;
 
-    public TicketController(TicketService ticketService, SeatService seatService) {
+    public TicketController(TicketService ticketService, SeatService seatService, MovieService movieService, ShowService showService) {
         this.ticketService = ticketService;
         this.seatService = seatService;
+        this.movieService = movieService;
+        this.showService = showService;
     }
 
     @GetMapping
@@ -25,9 +30,34 @@ public class TicketController {
         return ticketService.findAllTickets();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public MovieTicket getTicketsById(@PathVariable Long id) {
         return ticketService.findMovieTicketById(id);
+    }
+
+    @GetMapping("/salesPerMovie")
+    public List<TicketSales> getTicketSalesPerMovie() {
+        List<Movie> movies = movieService.findAll();
+        List<TicketSales> salesList = new ArrayList<>();
+
+        List<MovieTicket> allTickets = ticketService.findAllTickets();
+
+        for (Movie movie : movies) {
+            List<Show> shows = showService.findAllByMovieId(movie.getMovieId());
+            int totalTicketsSold = 0;
+            double totalRevenue = 0;
+
+            for (Show show : shows) {
+                for (MovieTicket ticket : allTickets) {
+                    if (ticket.getSeat().getShow().getShowId().equals(show.getShowId())) {
+                        totalTicketsSold++;
+                        totalRevenue += ticket.getPrice();
+                    }
+                }
+            }
+            salesList.add(new TicketSales(movie.getMovieTitle(), totalTicketsSold, totalRevenue));
+        }
+        return salesList;
     }
 
     @PostMapping("/reserve")
@@ -36,21 +66,10 @@ public class TicketController {
 
         ShowSeat showSeat = seatService.findSeatById(seatId);
         return ticketService.createTicket(showSeat, ticketType);
-    }
-
-    @PostMapping("/show/{showId}/seat/{seatId}/override")
-    public String overrideSeatForShow(@PathVariable Long showId,
-                                      @PathVariable Long seatId,
-                                      @RequestParam SeatAvailability newAvailability) {
-
-        //check for admin here (if we get to it)
-
-        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
-        return "Seat-type changed for this show";
-    }
+                }
 
     @GetMapping("all-ticket-types")
     public List<TicketType> getAllTicketTypes() {
-        return List.of(TicketType.values());
+     return List.of(TicketType.values());
     }
 }

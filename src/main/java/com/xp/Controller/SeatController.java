@@ -3,6 +3,7 @@ package com.xp.Controller;
 
 import com.xp.Model.SeatAvailability;
 import com.xp.Model.SeatType;
+import com.xp.Model.SeatAvailability;
 import com.xp.Model.ShowSeat;
 import com.xp.Model.Show;
 import com.xp.Service.SeatService;
@@ -49,5 +50,16 @@ public class SeatController {
     public Double getPrice(@PathVariable Long seatId) {
         ShowSeat showSeat = getSeatById(seatId);
         return showSeat.getSeat().getSeatType().getPriceAdjustment();
+    }
+
+    @PostMapping("/show/{showId}/seat/{seatId}/override")
+    public String overrideSeatForShow(@PathVariable Long showId,
+                                      @PathVariable Long seatId,
+                                      @RequestParam SeatAvailability newAvailability) {
+
+        //check for admin here (if we get to it)
+
+        seatService.changeSeatTypeIfAdmin(showId, seatId, newAvailability);
+        return "Seat-type changed for this show";
     }
 }
